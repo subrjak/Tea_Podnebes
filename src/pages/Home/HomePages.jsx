@@ -1,10 +1,10 @@
 import React from 'react';
-import "/teapodnebes/src/styles/HomePage.css";
+import "./HomePage.css";
 import bgImage from "/teapodnebes/src/assets/background.jpg";
 
 const HomePage = () => {
     return (
-        <div className="app" style={{ '--bg-image': `url(${bgImage})` }}>
+        <div className="app" style={{ backgroundImage: `url(${bgImage})` }}>
             {/* Hero секция */}
             <section className="hero">
                 <div className="hero-content">
@@ -54,7 +54,7 @@ const HomePage = () => {
                 </div>
             </section>
 
-            {/* Секция преимуществ "О нас" */}
+            {/* Секция "О нас" */}
             <section className="about">
                 <div className="container">
                     <h2 className="section-title">О нас</h2>
