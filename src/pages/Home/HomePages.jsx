@@ -1,20 +1,21 @@
 import React from 'react';
 import "./HomePage.css";
-import bgImage from "/teapodnebes/src/assets/background.jpg";
 
 const HomePage = () => {
     return (
-        <div className="app" style={{ backgroundImage: `url(${bgImage})` }}>
+        <div className="home-page">
             {/* Hero секция */}
             <section className="hero">
-                <div className="hero-content">
-                    <h1 className="hero-title">Китайский чай с лучших плантаций</h1>
-                    <p className="hero-subtitle">
-                        Пуэр, улуны и другие чаи напрямую от китайских поставщиков
-                    </p>
-                    <div className="hero-buttons">
-                        <a href="#" className="btn btn-primary">Посмотреть каталог</a>
-                        <a href="#" className="btn btn-link">О чайной церемонии →</a>
+                <div className="container">
+                    <div className="hero-content">
+                        <h1 className="hero-title">Китайский чай с лучших плантаций</h1>
+                        <p className="hero-subtitle">
+                            Пуэр, улуны и другие чаи напрямую от китайских поставщиков
+                        </p>
+                        <div className="hero-buttons">
+                            <a href="#" className="btn btn-primary">Посмотреть каталог</a>
+                            <a href="#" className="btn btn-link">О чайной церемонии →</a>
+                        </div>
                     </div>
                 </div>
                 <div className="hero-decoration"></div>

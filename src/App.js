@@ -1,22 +1,34 @@
-import Header from "./components/Header"
-import Footer from "./components/Footer"
-import HomePage from "./pages/Home/HomePages"
-import CatalogPage from "./pages/Catalog/CatalogPage"
-import CartPage from "./pages/Cart/CartPage"
-import { Routes, Route } from "react-router-dom"
-import "./styles/index.css"
-import api from './api/api.js'
+import React from 'react';
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import HomePage from "./pages/Home/HomePages";
+import CatalogPage from "./pages/Catalog/CatalogPage";
+import CartPage from "./pages/Cart/CartPage";
+import { Routes, Route } from "react-router-dom";
+import "./styles/index.css";
+import bgImage from "./assets/background.jpg";
 
 function App() {
   return (
-    <div className="app">
-      <Header/>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/catalog" element={<CatalogPage />} />
-        <Route path="/cart" element={<CartPage />} />
-      </Routes>
-      <Footer/>
+    <div
+      className="app-wrapper"
+      style={{
+        backgroundImage: `url(${bgImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed'
+      }}
+    >
+      <Header />
+      <main className="main-content">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/catalog" element={<CatalogPage />} />
+          <Route path="/cart" element={<CartPage />} />
+          <Route path="*" element={<div>Страница не найдена</div>} />
+        </Routes>
+      </main>
+      <Footer />
     </div>
   );
 }
