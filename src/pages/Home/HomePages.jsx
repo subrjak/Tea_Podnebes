@@ -18,7 +18,6 @@ const HomePage = () => {
                         </div>
                     </div>
                 </div>
-                <div className="hero-decoration"></div>
             </section>
 
             {/* Секция "Виды чая" */}
@@ -27,27 +26,27 @@ const HomePage = () => {
                     <h2 className="section-title">Виды чая</h2>
                     <div className="tea-grid">
                         <div className="tea-card red-tea">
-                            <img src={"./img/red_tea.jpg"} alt="Красный чай" className="tea-image" />
+                            <img src={"/img/red_tea.jpg"} alt="Красный чай" className="tea-image" />
                             <h3>Красный чай</h3>
                             <p>Самый расслабляющий</p>
                         </div>
                         <div className="tea-card white-tea">
-                            <img src={"./img/white_tea.jpg"} alt="Белый чай" className="tea-image" />
+                            <img src={"/img/white_tea.jpg"} alt="Белый чай" className="tea-image" />
                             <h3>Белый чай</h3>
                             <p>Лучший вариант для настройки на работу</p>
                         </div>
                         <div className="tea-card oolong-tea">
-                            <img src={"./img/oolong.jpg"} alt="Улун" className="tea-image" />
+                            <img src={"/img/oolong.jpg"} alt="Улун" className="tea-image" />
                             <h3>Улуны</h3>
                             <p>Для работы и отдыха</p>
                         </div>
                         <div className="tea-card puer-tea">
-                            <img src={"./img/puer.jpg"} alt="Пуэр" className="tea-image" />
+                            <img src={"/img/puer.jpg"} alt="Пуэр" className="tea-image" />
                             <h3>Пуэры</h3>
                             <p>Для неторопливых ценителей</p>
                         </div>
                         <div className="tea-card green-tea">
-                            <img src={"./img/green_tea.jpg"} alt="Зеленый чай" className="tea-image" />
+                            <img src={"/img/green_tea.jpg"} alt="Зеленый чай" className="tea-image" />
                             <h3>Зеленый чай</h3>
                             <p>Тонизирующие и расслабляющие</p>
                         </div>

@@ -1,5 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -14,15 +22,14 @@ body {
 .container {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 0 24px;
-}
-
-.app-wrapper {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  padding: 0 20px;
 }
 
 .main-content {
   flex: 1;
+}
+
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
 }

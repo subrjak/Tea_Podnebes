@@ -10,13 +10,14 @@ import bgImage from "./assets/background.jpg";
 
 function App() {
   return (
-    <div
+    <div 
       className="app-wrapper"
       style={{
         backgroundImage: `url(${bgImage})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        backgroundAttachment: 'fixed'
+        backgroundAttachment: 'fixed',
+        minHeight: '100vh',
       }}
     >
       <Header />
