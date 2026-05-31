@@ -12,7 +12,7 @@ const HomePage = () => {
                             Пуэр, улуны и другие чаи напрямую от китайских поставщиков
                         </p>
                         <div className="hero-buttons">
-                            <a href="#" className="btn btn-primary">Посмотреть каталог</a>
+                            <a href="/catalog" className="btn btn-primary">Посмотреть каталог</a>
                             <a href="#" className="btn btn-link">О чайной церемонии →</a>
                         </div>
                     </div>

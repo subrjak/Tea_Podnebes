@@ -7,6 +7,7 @@ const api = axios.create({
     },
 });
 
+// Автоматически добавляем токен авторизации, если он сохранён
 api.interceptors.request.use(config => {
     const token = localStorage.getItem('token');
     if (token) {
