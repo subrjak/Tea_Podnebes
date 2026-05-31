@@ -1,223 +1,263 @@
+/* Стили для HomePage — оригинальные фоны секций + центрирование */
 
+/* Общие сбросы (не дублируем, есть в index.css) */
+
+/* Hero секция — центрирована, свой градиентный фон */
 .hero {
-  padding: 80px 0;
+    max-width: 1280px;
+    margin: 0 auto;
+    width: 100%;
+    background: linear-gradient(135deg, #f5ca8f 0%, #f0dec8 100%);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 80px 32px;
+    gap: 40px;
+    flex-wrap: wrap;
+    border-radius: 0;
+    /* можно добавить скругление углов, если нужно */
 }
 
 .hero-content {
-  flex: 1;
-  min-width: 280px;
+    flex: 1;
+    min-width: 280px;
 }
 
 .hero-title {
-  font-size: 3.2rem;
-  font-weight: 800;
-  color: #3b2c1f;
-  margin-bottom: 20px;
-  line-height: 1.2;
+    font-size: 3.2rem;
+    font-weight: 800;
+    color: #3b2c1f;
+    margin-bottom: 20px;
+    line-height: 1.2;
 }
 
 .hero-subtitle {
-  font-size: 1.2rem;
-  color: #5e4b34;
-  margin-bottom: 32px;
-  max-width: 600px;
+    font-size: 1.2rem;
+    color: #5e4b34;
+    margin-bottom: 32px;
+    max-width: 600px;
 }
 
 .hero-buttons {
-  display: flex;
-  gap: 24px;
-  align-items: center;
-  flex-wrap: wrap;
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
 .btn {
-  display: inline-block;
-  padding: 12px 28px;
-  border-radius: 40px;
-  font-weight: 600;
-  transition: all 0.2s;
-  cursor: pointer;
-  border: none;
+    display: inline-block;
+    padding: 12px 28px;
+    border-radius: 40px;
+    font-weight: 600;
+    transition: all 0.2s;
+    cursor: pointer;
+    border: none;
 }
 
 .btn-primary {
-  background-color: #4a6b3c;
-  color: white;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    background-color: #4a6b3c;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
 .btn-primary:hover {
-  background-color: #3a5630;
-  transform: translateY(-2px);
+    background-color: #3a5630;
+    transform: translateY(-2px);
 }
 
 .btn-link {
-  background: transparent;
-  color: #4a3b2c;
-  border-bottom: 1px dashed #b87c4f;
-  border-radius: 0;
-  padding: 8px 0;
+    background: transparent;
+    color: #4a3b2c;
+    border-bottom: 1px dashed #b87c4f;
+    border-radius: 0;
+    padding: 8px 0;
 }
 
 .btn-link:hover {
-  color: #b45f2b;
-  border-bottom-color: #b45f2b;
+    color: #b45f2b;
+    border-bottom-color: #b45f2b;
+}
+
+.hero-decoration {
+    flex: 0.6;
+    height: 280px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><path fill="%23b87c4f20" d="M60,70 Q90,40 120,70 T180,90 Q200,110 170,130 T110,160 Q80,170 60,150 T30,110 Q20,90 40,75 T60,70Z"/><circle cx="90" cy="100" r="8" fill="%237a5a3a"/><circle cx="130" cy="110" r="6" fill="%237a5a3a"/></svg>');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
 }
 
 /* Секция "Виды чая" */
 .tea-types {
-  padding: 80px 0;
+    max-width: 1280px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 80px 32px;
+    background: white;
 }
 
 .section-title {
-  text-align: center;
-  font-size: 2.2rem;
-  margin-bottom: 48px;
-  color: #3b2c1f;
-  position: relative;
-  display: inline-block;
-  width: 100%;
+    text-align: center;
+    font-size: 2.2rem;
+    margin-bottom: 48px;
+    color: #3b2c1f;
+    position: relative;
+    display: inline-block;
+    width: 100%;
 }
 
 .section-title::after {
-  content: '';
-  display: block;
-  width: 70px;
-  height: 3px;
-  background-color: #b87c4f;
-  margin: 12px auto 0;
-  border-radius: 4px;
+    content: '';
+    display: block;
+    width: 70px;
+    height: 3px;
+    background-color: #b87c4f;
+    margin: 12px auto 0;
+    border-radius: 4px;
 }
 
 .tea-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 32px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 32px;
 }
 
 .tea-card {
-  background: rgba(255, 250, 245, 0.95);
-  border-radius: 28px;
-  padding: 32px 20px;
-  text-align: center;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-  transition: all 0.25s;
-  border: 1px solid #efe2d4;
+    background: #fefaf5;
+    border-radius: 28px;
+    padding: 32px 20px;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.03);
+    transition: all 0.25s;
+    border: 1px solid #efe2d4;
 }
 
 .tea-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 20px 25px -12px rgba(0, 0, 0, 0.15);
-  background: rgba(255, 250, 245, 1);
+    transform: translateY(-6px);
+    box-shadow: 0 20px 25px -12px rgba(0, 0, 0, 0.1);
+    border-color: #d6bb9b;
 }
 
 .tea-image {
-  width: 100%;
-  max-width: 150px;
-  height: 150px;
-  object-fit: cover;
-  border-radius: 20%;
-  margin-bottom: 20px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
+    width: 100%;
+    max-width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 20%;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
 }
 
 .tea-card:hover .tea-image {
-  transform: scale(1.02);
+    transform: scale(1.02);
 }
 
 .tea-card h3 {
-  font-size: 1.5rem;
-  margin-bottom: 12px;
-  color: #4a3b2c;
+    font-size: 1.5rem;
+    margin-bottom: 12px;
+    color: #4a3b2c;
 }
 
 .tea-card p {
-  color: #7d6850;
-  font-size: 0.9rem;
+    color: #7d6850;
+    font-size: 0.9rem;
 }
 
 /* Секция "О нас" */
 .about {
-  padding: 80px 0;
+    max-width: 1280px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 80px 32px;
+    background-color: #f6f0e8;
 }
 
 .features-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 40px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 40px;
 }
 
 .feature {
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 32px;
-  padding: 32px 24px;
-  text-align: center;
-  transition: all 0.2s;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-  border: 1px solid #efe2d4;
-}
-
-.feature:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+    background: white;
+    border-radius: 32px;
+    padding: 32px 24px;
+    text-align: center;
+    transition: all 0.2s;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
 }
 
 .feature-icon {
-  font-size: 2.8rem;
-  margin-bottom: 20px;
+    font-size: 2.8rem;
+    margin-bottom: 20px;
 }
 
 .feature h3 {
-  font-size: 1.4rem;
-  margin-bottom: 12px;
-  color: #3b2c1f;
+    font-size: 1.4rem;
+    margin-bottom: 12px;
+    color: #3b2c1f;
 }
 
 .feature p {
-  color: #6b5a48;
-  font-size: 0.95rem;
-  line-height: 1.4;
+    color: #6b5a48;
+    font-size: 0.95rem;
+    line-height: 1.4;
 }
 
 /* Адаптивность */
 @media (max-width: 768px) {
-  .hero {
-    padding: 60px 0;
-  }
-  .hero-title {
-    font-size: 2.3rem;
-  }
-  .hero-buttons {
-    justify-content: center;
-  }
-  .hero-content {
-    text-align: center;
-  }
-  .hero-subtitle {
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .section-title {
-    font-size: 1.8rem;
-  }
-  .tea-grid,
-  .features-grid {
-    gap: 20px;
-  }
-  .tea-card {
-    padding: 24px 16px;
-  }
-  .feature {
-    padding: 24px 20px;
-  }
+    .hero {
+        padding: 48px 24px;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .hero-title {
+        font-size: 2.3rem;
+    }
+
+    .hero-buttons {
+        justify-content: center;
+    }
+
+    .hero-decoration {
+        display: none;
+    }
+
+    .tea-types {
+        padding: 60px 24px;
+    }
+
+    .about {
+        padding: 60px 24px;
+    }
+
+    .section-title {
+        font-size: 1.8rem;
+    }
+
+    .tea-grid,
+    .features-grid {
+        gap: 20px;
+    }
 }
 
 @media (max-width: 480px) {
-  .hero-title {
-    font-size: 1.8rem;
-  }
-  .btn {
-    padding: 10px 20px;
-  }
+    .hero-title {
+        font-size: 1.8rem;
+    }
+
+    .btn {
+        padding: 10px 20px;
+    }
+
+    .tea-card {
+        padding: 24px 16px;
+    }
+
+    .feature {
+        padding: 24px 20px;
+    }
 }
