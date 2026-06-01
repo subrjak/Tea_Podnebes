@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import api from '../../api/api';
 import styles from './CatalogPage.module.css';
 import TeaCard from '../../components/TeaCard';
+import "../../components/componetns_style/TeaCard.css"
 
 const CatalogPage = () => {
     const [teas, setTeas] = useState([]);
@@ -34,7 +35,6 @@ const CatalogPage = () => {
 
     return (
         <div className={styles['catalog-page']}>
-            <h1>Каталог чая</h1>
             <div className={styles['catalog-grid']}>
                 {teas.map(tea => (
                     <TeaCard key={tea.id} tea={tea} onAddToCart={handleAddToCart} />

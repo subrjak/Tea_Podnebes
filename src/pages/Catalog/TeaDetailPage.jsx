@@ -35,7 +35,7 @@ const TeaDetailPage = () => {
       <p><strong>Вид:</strong> {tea.category?.name}</p>
       <p><strong>Описание:</strong> {tea.description}</p>
       <p><strong>Происхождение:</strong> {tea.origin}</p>
-      <p><strong>Выдержка:</strong> {tea.age} лет</p>
+      <p><strong>Выдержка:</strong> {tea.age} лет/года</p>
       <p><strong>Цена:</strong> {tea.price} ₸ за 100 грамм</p>
       <p><strong>Температура заваривания:</strong> {tea.brewing_temperature}</p>
       <p><strong>Рекомендуемая посуда:</strong> {tea.recommended_ware}</p>
