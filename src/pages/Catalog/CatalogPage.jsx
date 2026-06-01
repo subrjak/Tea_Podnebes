@@ -2,12 +2,15 @@ import { useEffect, useMemo, useState } from 'react';
 import api from '../../api/api';
 import styles from './CatalogPage.module.css';
 import TeaCard from '../../components/TeaCard';
+import { useCart } from '../../contexts/CartContext';
 import '../../components/componetns_style/TeaCard.css';
 
 const CatalogPage = () => {
+  const { addItem } = useCart();
   const [teas, setTeas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [addedTeaId, setAddedTeaId] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [maxPrice, setMaxPrice] = useState('');
@@ -70,8 +73,9 @@ const CatalogPage = () => {
   }, [teas, searchQuery, selectedCategory, maxPrice]);
 
   const handleAddToCart = (tea) => {
-    console.log('Добавить в корзину:', tea.name);
-    alert(`Товар "${tea.name}" добавлен в корзину (заглушка)`);
+    addItem(tea);
+    setAddedTeaId(tea.id);
+    window.setTimeout(() => setAddedTeaId(null), 1400);
   };
 
   const resetFilters = () => {
@@ -138,6 +142,12 @@ const CatalogPage = () => {
           </button>
         </div>
       </section>
+
+      {addedTeaId && (
+        <div className={styles.cartNotice} role="status">
+          Товар добавлен в корзину
+        </div>
+      )}
 
       {filteredTeas.length > 0 ? (
         <div className={styles.catalogGrid}>

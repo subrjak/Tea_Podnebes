@@ -1,13 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import api from '../../api/api';
+import { useCart } from '../../contexts/CartContext';
 import styles from './DetailPage.module.css';
 
 const TeaDetailPage = () => {
   const { slug } = useParams();
+  const { addItem } = useCart();
   const [tea, setTea] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isAdded, setIsAdded] = useState(false);
 
   useEffect(() => {
     const fetchTea = async () => {
@@ -30,7 +33,9 @@ const TeaDetailPage = () => {
   if (!tea) return <div className={styles.notFound}>Чай не найден</div>;
 
   const handleAddToCart = () => {
-    console.log('Добавить в корзину:', tea.name);
+    addItem(tea);
+    setIsAdded(true);
+    window.setTimeout(() => setIsAdded(false), 1400);
   };
 
   const formatPrice = (value) => {
@@ -87,7 +92,7 @@ const TeaDetailPage = () => {
             <strong className={styles.price}>{formatPrice(tea.price)}</strong>
             <div className={styles.actions}>
               <button className={styles.addButton} onClick={handleAddToCart}>
-                Добавить в корзину
+                {isAdded ? 'Добавлено' : 'Добавить в корзину'}
               </button>
               <Link className={styles.secondaryButton} to="/catalog">
                 Смотреть еще

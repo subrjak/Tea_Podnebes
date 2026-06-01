@@ -288,6 +288,10 @@
   color: #9b3f2b;
 }
 
+.backLink::before {
+  content: "<";
+}
+
 @media (max-width: 900px) {
   .hero,
   .contentGrid {

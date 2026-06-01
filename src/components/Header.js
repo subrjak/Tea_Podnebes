@@ -1,12 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContexts';
+import { useCart } from '../contexts/CartContext';
 import './componetns_style/Header.css';
 
 function Header() {
   const navigate = useNavigate();
   const menuRef = useRef(null);
   const { isAuthenticated, user, logout } = useAuth();
+  const { totalQuantity } = useCart();
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -41,7 +43,10 @@ function Header() {
         <nav className="nav">
           <NavLink to="/" end>Главная</NavLink>
           <NavLink to="/catalog">Каталог</NavLink>
-          <NavLink to="/cart">Корзина</NavLink>
+          <NavLink className="cart-link" to="/cart">
+            Корзина
+            {totalQuantity > 0 && <span className="cart-count">{totalQuantity}</span>}
+          </NavLink>
           {user?.is_admin && <NavLink to="/admin">Админ</NavLink>}
         </nav>
 
