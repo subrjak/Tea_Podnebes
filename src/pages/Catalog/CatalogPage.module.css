@@ -1,14 +1,23 @@
 .catalog-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
-  max-width: 1200px;
+  grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+  gap: 28px;
+  width: 100%;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 34px 20px 64px;
 }
 
 .catalog-page {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+}
+
+@media (max-width: 560px) {
+  .catalog-grid {
+    grid-template-columns: 1fr;
+    padding: 22px 14px 42px;
+  }
 }
