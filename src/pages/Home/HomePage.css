@@ -123,7 +123,11 @@
     gap: 32px;
 }
 
-.tea-card {
+.home-tea-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 320px;
     background: #fefaf5;
     border-radius: 28px;
     padding: 32px 20px;
@@ -133,13 +137,13 @@
     border: 1px solid #efe2d4;
 }
 
-.tea-card:hover {
+.home-tea-card:hover {
     transform: translateY(-6px);
     box-shadow: 0 20px 25px -12px rgba(0, 0, 0, 0.1);
     border-color: #d6bb9b;
 }
 
-.tea-image {
+.home-tea-card__image {
     width: 100%;
     max-width: 150px;
     height: 150px;
@@ -150,19 +154,20 @@
     transition: transform 0.3s ease;
 }
 
-.tea-card:hover .tea-image {
+.home-tea-card:hover .home-tea-card__image {
     transform: scale(1.02);
 }
 
-.tea-card h3 {
+.home-tea-card h3 {
     font-size: 1.5rem;
     margin-bottom: 12px;
     color: #4a3b2c;
 }
 
-.tea-card p {
+.home-tea-card p {
     color: #7d6850;
     font-size: 0.9rem;
+    line-height: 1.5;
 }
 
 /* Секция "О нас" */
@@ -253,7 +258,7 @@
         padding: 10px 20px;
     }
 
-    .tea-card {
+    .home-tea-card {
         padding: 24px 16px;
     }
 
