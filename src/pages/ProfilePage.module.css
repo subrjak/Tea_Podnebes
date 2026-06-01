@@ -89,6 +89,15 @@
   overflow-wrap: anywhere;
 }
 
+.infoGrid .adminStatus {
+  background: #fff5ea;
+  border-color: #d6bb9b;
+}
+
+.infoGrid .adminStatus strong {
+  color: #b45f2b;
+}
+
 .actions {
   display: flex;
   flex-wrap: wrap;

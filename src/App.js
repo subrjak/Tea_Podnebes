@@ -9,7 +9,9 @@ import CartPage from './pages/Cart/CartPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ProfilePage from './pages/ProfilePage';
+import AdminDashboardPage from './pages/Admin/AdminDashboardPage';
 import PrivateRoute from './components/PrivateRoute';
+import AdminRoute from './components/AdminRoute';
 import './styles/index.css';
 import bgImage from './assets/background.jpg';
 
@@ -40,6 +42,14 @@ function App() {
               <PrivateRoute>
                 <ProfilePage />
               </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              <AdminRoute>
+                <AdminDashboardPage />
+              </AdminRoute>
             }
           />
           <Route path="*" element={<div className="auth-status">Страница не найдена</div>} />

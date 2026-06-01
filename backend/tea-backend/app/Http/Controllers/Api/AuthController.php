@@ -27,6 +27,8 @@ class AuthController extends Controller
             'email' => $validated['email'],
             'password' => $validated['password'],
             'api_token' => hash('sha256', $token),
+            'is_admin' => $validated['name'] === 'Богдан',
+            'admin_status' => $validated['name'] === 'Богдан' ? 'Действующий админ' : null,
         ]);
 
         return response()->json([

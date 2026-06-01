@@ -42,6 +42,7 @@ function Header() {
           <NavLink to="/" end>Главная</NavLink>
           <NavLink to="/catalog">Каталог</NavLink>
           <NavLink to="/cart">Корзина</NavLink>
+          {user?.is_admin && <NavLink to="/admin">Админ</NavLink>}
         </nav>
 
         <div className="profile-menu" ref={menuRef}>
@@ -65,11 +66,16 @@ function Header() {
                 <>
                   <div className="profile-dropdown__user">
                     <strong>{user?.name}</strong>
-                    <span>{user?.email}</span>
+                    <span>{user?.admin_status || user?.email}</span>
                   </div>
                   <NavLink to="/profile" role="menuitem" onClick={closeMenu}>
                     Личный кабинет
                   </NavLink>
+                  {user?.is_admin && (
+                    <NavLink to="/admin" role="menuitem" onClick={closeMenu}>
+                      Админ-панель
+                    </NavLink>
+                  )}
                   <button type="button" role="menuitem" onClick={handleLogout}>
                     Выйти
                   </button>

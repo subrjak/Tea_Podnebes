@@ -11,6 +11,10 @@ const ProfilePage = () => {
     navigate('/login');
   };
 
+  const status = user?.is_admin
+    ? (user?.admin_status || 'Действующий админ')
+    : 'Активный покупатель';
+
   return (
     <div className={styles.profilePage}>
       <section className={styles.profileCard}>
@@ -26,9 +30,9 @@ const ProfilePage = () => {
         </div>
 
         <div className={styles.infoGrid}>
-          <div>
+          <div className={user?.is_admin ? styles.adminStatus : undefined}>
             <span>Статус</span>
-            <strong>Активный покупатель</strong>
+            <strong>{status}</strong>
           </div>
           <div>
             <span>Почта</span>
@@ -41,6 +45,7 @@ const ProfilePage = () => {
         </div>
 
         <div className={styles.actions}>
+          {user?.is_admin && <Link to="/admin">Открыть админ-панель</Link>}
           <Link to="/catalog">Перейти в каталог</Link>
           <Link to="/cart">Открыть корзину</Link>
           <button type="button" onClick={handleLogout}>Выйти</button>

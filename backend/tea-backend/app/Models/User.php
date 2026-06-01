@@ -23,6 +23,8 @@ class User extends Authenticatable
         'email',
         'password',
         'api_token',
+        'is_admin',
+        'admin_status',
     ];
 
     /**
@@ -46,6 +48,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_admin' => 'boolean',
         ];
     }
 }
