@@ -74,7 +74,6 @@ const AdminDashboardPage = () => {
         <div className={styles.panel}>
           <div className={styles.panelHeader}>
             <span className={styles.kicker}>Склад</span>
-            <h2>Низкие остатки</h2>
           </div>
           <div className={styles.tableList}>
             {dashboard.low_stock_teas.map((tea) => (
