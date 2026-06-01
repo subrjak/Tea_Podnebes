@@ -20,6 +20,7 @@
     font-size: 1.5rem;
     font-weight: 600;
     color: #4a3b2c;
+    text-decoration: none;
 }
 
 .nav {
@@ -39,19 +40,46 @@
 }
 
 .profile {
-    background: none;
-    border: none;
-    font-size: 1.2rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #253623;
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-decoration: none;
     cursor: pointer;
-    padding: 2px;
-    transition: transform 0.2s;
+    padding: 6px 10px;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    transition: transform 0.2s, color 0.2s, border-color 0.2s, background 0.2s;
 }
 
 .profile:hover {
+    color: #b45f2b;
+    background: #fff5ea;
+    border-color: #ecd9c2;
     transform: scale(1.05);
 }
 
 .nav a.active {
     color: #b45f2b;
     font-weight: 600;
+}
+
+.profile.active {
+    color: #b45f2b;
+}
+
+@media (max-width: 760px) {
+    .header .container {
+        justify-content: center;
+        gap: 18px;
+    }
+
+    .nav {
+        order: 3;
+        justify-content: center;
+        width: 100%;
+        gap: 24px;
+    }
 }

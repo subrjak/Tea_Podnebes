@@ -1,13 +1,17 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import HomePage from "./pages/Home/HomePages";
+import Header from './components/Header';
+import Footer from './components/Footer';
+import HomePage from './pages/Home/HomePages';
 import TeaDetailPage from './pages/Catalog/TeaDetailPage';
-import CatalogPage from "./pages/Catalog/CatalogPage";
-import CartPage from "./pages/Cart/CartPage";
-import "./styles/index.css";
-import bgImage from "./assets/background.jpg";
+import CatalogPage from './pages/Catalog/CatalogPage';
+import CartPage from './pages/Cart/CartPage';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+import ProfilePage from './pages/ProfilePage';
+import PrivateRoute from './components/PrivateRoute';
+import './styles/index.css';
+import bgImage from './assets/background.jpg';
 
 function App() {
   return (
@@ -28,7 +32,17 @@ function App() {
           <Route path="/catalog" element={<CatalogPage />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/tea/:slug" element={<TeaDetailPage />} />
-          <Route path="*" element={<div>Страница не найдена</div>} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route
+            path="/profile"
+            element={
+              <PrivateRoute>
+                <ProfilePage />
+              </PrivateRoute>
+            }
+          />
+          <Route path="*" element={<div className="auth-status">Страница не найдена</div>} />
         </Routes>
       </main>
       <Footer />

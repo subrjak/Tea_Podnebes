@@ -245,6 +245,7 @@
 }
 
 .description p {
+  white-space: pre-line;
   color: #5e4b34;
   font-size: 1rem;
   line-height: 1.8;
