@@ -1,10 +1,13 @@
+import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { getTeaWeightOptions, getWeightLabel, getWeightPrice } from '../utils/teaWeights';
+
+const formatPrice = (value) => `${Number(value || 0).toLocaleString('ru-RU')} ₸`;
 
 const TeaCard = ({ tea, onAddToCart }) => {
-  const numericPrice = Number(tea.price);
-  const price = Number.isNaN(numericPrice)
-    ? tea.price
-    : numericPrice.toLocaleString('ru-RU');
+  const weightOptions = useMemo(() => getTeaWeightOptions(tea), [tea]);
+  const [selectedWeight, setSelectedWeight] = useState(100);
+  const selectedPrice = getWeightPrice(tea.price, selectedWeight);
 
   return (
     <div className="tea-card">
@@ -20,12 +23,26 @@ const TeaCard = ({ tea, onAddToCart }) => {
         </Link>
 
         <div className="tea-card__meta">
-          <span>100 грамм</span>
-          <strong className="price">{price} ₸</strong>
+          <span>{getWeightLabel(selectedWeight)}</span>
+          <strong className="price">{formatPrice(selectedPrice)}</strong>
         </div>
 
+        <label className="tea-card__weight">
+          <span>Фасовка</span>
+          <select
+            value={selectedWeight}
+            onChange={(event) => setSelectedWeight(Number(event.target.value))}
+          >
+            {weightOptions.map((weight) => (
+              <option key={weight} value={weight}>
+                {getWeightLabel(weight)}
+              </option>
+            ))}
+          </select>
+        </label>
+
         <div className="tea-card__actions">
-          <button className="add-to-cart" onClick={() => onAddToCart(tea)}>
+          <button className="add-to-cart" onClick={() => onAddToCart(tea, selectedWeight)}>
             В корзину
           </button>
           <Link className="tea-card__details" to={`/tea/${tea.slug}`}>

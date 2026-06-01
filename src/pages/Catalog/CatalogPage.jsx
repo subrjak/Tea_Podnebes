@@ -72,9 +72,9 @@ const CatalogPage = () => {
     });
   }, [teas, searchQuery, selectedCategory, maxPrice]);
 
-  const handleAddToCart = (tea) => {
-    addItem(tea);
-    setAddedTeaId(tea.id);
+  const handleAddToCart = (tea, weight) => {
+    addItem(tea, weight);
+    setAddedTeaId(`${tea.id}-${weight}`);
     window.setTimeout(() => setAddedTeaId(null), 1400);
   };
 

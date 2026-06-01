@@ -136,6 +136,47 @@
   line-height: 1.2;
 }
 
+.weightOptions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(92px, 1fr));
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.weightOptions button {
+  min-height: 42px;
+  padding: 10px 12px;
+  color: #4a3b2c;
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 800;
+  background: #fff;
+  border: 1px solid #d6bb9b;
+  border-radius: 999px;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.weightOptions button:hover,
+.weightOptions .activeWeight {
+  color: white;
+  background: #6b8e4e;
+  border-color: #6b8e4e;
+  transform: translateY(-2px);
+}
+
+.weightHint {
+  margin: -2px 0 4px;
+  color: #7d6850;
+  font-size: 0.88rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
 .actions {
   display: flex;
   flex-wrap: wrap;

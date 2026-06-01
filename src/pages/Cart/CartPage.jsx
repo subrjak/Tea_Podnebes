@@ -1,13 +1,16 @@
 import { Link } from 'react-router-dom';
 import { useCart } from '../../contexts/CartContext';
+import { getWeightLabel } from '../../utils/teaWeights';
 import styles from './CartPage.module.css';
 
 const formatPrice = (value) => `${Number(value || 0).toLocaleString('ru-RU')} ₸`;
+const formatWeight = (value) => `${Number(value || 0).toLocaleString('ru-RU')} г`;
 
 const CartPage = () => {
   const {
     items,
     totalQuantity,
+    totalWeight,
     totalPrice,
     incrementItem,
     decrementItem,
@@ -34,7 +37,7 @@ const CartPage = () => {
         <div>
           <span className={styles.kicker}>Корзина</span>
           <h1>Ваш заказ</h1>
-          <p>{totalQuantity} шт. в корзине</p>
+          <p>{totalQuantity} шт. / {formatWeight(totalWeight)}</p>
         </div>
         <Link className={styles.catalogLink} to="/catalog">
           Продолжить покупки
@@ -44,7 +47,7 @@ const CartPage = () => {
       <div className={styles.layout}>
         <section className={styles.itemsPanel} aria-label="Товары в корзине">
           {items.map((item) => (
-            <article className={styles.cartItem} key={item.id}>
+            <article className={styles.cartItem} key={item.cartKey}>
               <Link className={styles.imageLink} to={`/tea/${item.slug}`}>
                 <img src={item.image} alt={item.name} />
               </Link>
@@ -53,21 +56,23 @@ const CartPage = () => {
                 <Link to={`/tea/${item.slug}`}>{item.name}</Link>
                 <div className={styles.itemMeta}>
                   <span>{item.category?.name || 'Без категории'}</span>
+                  <span>Фасовка: {getWeightLabel(item.weight)}</span>
+                  <span>{formatPrice(item.linePrice)} за шт.</span>
                 </div>
               </div>
 
               <div className={styles.itemControls}>
                 <div className={styles.quantity} aria-label={`Количество ${item.name}`}>
-                  <button type="button" onClick={() => decrementItem(item.id)} aria-label="Уменьшить количество">
+                  <button type="button" onClick={() => decrementItem(item.cartKey)} aria-label="Уменьшить количество">
                     -
                   </button>
                   <span>{item.quantity}</span>
-                  <button type="button" onClick={() => incrementItem(item.id)} aria-label="Увеличить количество">
+                  <button type="button" onClick={() => incrementItem(item.cartKey)} aria-label="Увеличить количество">
                     +
                   </button>
                 </div>
-                <strong className={styles.itemTotal}>{formatPrice(item.price * item.quantity)}</strong>
-                <button className={styles.removeButton} type="button" onClick={() => removeItem(item.id)}>
+                <strong className={styles.itemTotal}>{formatPrice(item.linePrice * item.quantity)}</strong>
+                <button className={styles.removeButton} type="button" onClick={() => removeItem(item.cartKey)}>
                   Убрать
                 </button>
               </div>
@@ -78,8 +83,12 @@ const CartPage = () => {
         <aside className={styles.summaryPanel} aria-label="Итого">
           <h2>Итого</h2>
           <div className={styles.summaryRow}>
-            <span>Товары</span>
+            <span>Позиции</span>
             <strong>{totalQuantity} шт.</strong>
+          </div>
+          <div className={styles.summaryRow}>
+            <span>Общий вес</span>
+            <strong>{formatWeight(totalWeight)}</strong>
           </div>
           <div className={styles.summaryRow}>
             <span>Сумма</span>

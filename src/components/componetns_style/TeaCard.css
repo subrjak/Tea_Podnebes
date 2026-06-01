@@ -119,6 +119,37 @@
   white-space: nowrap;
 }
 
+.tea-card__weight {
+  display: grid;
+  gap: 7px;
+}
+
+.tea-card__weight span {
+  color: #7d6850;
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.tea-card__weight select {
+  width: 100%;
+  min-height: 42px;
+  padding: 9px 12px;
+  color: #3b2c1f;
+  font: inherit;
+  font-weight: 700;
+  background: #fefaf5;
+  border: 1px solid #efe2d4;
+  border-radius: 14px;
+  outline: none;
+  cursor: pointer;
+}
+
+.tea-card__weight select:focus {
+  background: #fff;
+  border-color: #b45f2b;
+  box-shadow: 0 0 0 3px rgba(180, 95, 43, 0.12);
+}
+
 .tea-card__actions {
   display: grid;
   grid-template-columns: 1fr auto;
