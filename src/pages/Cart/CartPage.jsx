@@ -53,7 +53,6 @@ const CartPage = () => {
                 <Link to={`/tea/${item.slug}`}>{item.name}</Link>
                 <div className={styles.itemMeta}>
                   <span>{item.category?.name || 'Без категории'}</span>
-                  <span>{formatPrice(item.price)} за 100 грамм</span>
                 </div>
               </div>
 
