@@ -65,7 +65,7 @@ function Footer() {
           </div>
         </div>
         <div className="footer-bottom">
-          <p>© 2026 Поднебесный чай — традиции и качество</p>
+          <p>© 2026 Лист Поднебесной — традиции и качество</p>
         </div>
       </div>
     </footer>

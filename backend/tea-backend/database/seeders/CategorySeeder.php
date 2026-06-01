@@ -19,7 +19,7 @@ class CategorySeeder extends Seeder
         ['name' => 'Улун', 'slug' => 'oolong'],
         ['name' => 'Пуэр', 'slug' => 'puer'],
         ['name' => 'Белый', 'slug' => 'white'],
-        ['name' => 'Травяной', 'slug' => 'herbal'],
+        ['name' => 'Красный', 'slug' => 'red'],
     ];
     foreach ($categories as $cat) {
         Category::create($cat);

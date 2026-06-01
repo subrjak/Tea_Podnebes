@@ -16,9 +16,10 @@ class TeaSeeder extends Seeder
     {
         // Получаем ID категорий по слагам
         $green = Category::where('slug', 'green')->first()->id;
-        $black = Category::where('slug', 'black')->first()->id;
         $oolong = Category::where('slug', 'oolong')->first()->id;
         $puer = Category::where('slug', 'puer')->first()->id;
+        $white = Category::where('slug', 'white')->first()->id;
+        $red = Category::where('slug', 'red')->first()->id;
 
         $teas = [
             [
@@ -32,7 +33,7 @@ class TeaSeeder extends Seeder
                 'stock' => 30,
                 'image' => 'teas/longjing.jpg',
                 'brewing_temperature' => '75–80°C',
-                'recommended_ware' => 'Стеклянный чайник или гайвань',
+                'recommended_ware' => 'Гайвань',
             ],
             [
                 'category_id' => $oolong,
@@ -45,7 +46,7 @@ class TeaSeeder extends Seeder
                 'stock' => 15,
                 'image' => 'teas/dahongpao.jpg',
                 'brewing_temperature' => '90–95°C',
-                'recommended_ware' => 'Исинский глиняный чайник',
+                'recommended_ware' => 'Глиняный чайник, фарфоровая или керамическая гайвань',
             ],
             [
                 'category_id' => $puer,
@@ -58,9 +59,22 @@ class TeaSeeder extends Seeder
                 'stock' => 10,
                 'image' => 'teas/puer.jpg',
                 'brewing_temperature' => '95–100°C',
-                'recommended_ware' => 'Глиняный чайник или фарфор',
+                'recommended_ware' => 'Глиняный чайник',
             ],
-            // добавь ещё несколько по желанию
+            [
+                'category_id' => $red,
+                'name' => 'Дянь хун Мао Фэн "Ворсистые пики"',
+                'slug' => 'yan-hong-mao-feng',
+                'description' => 'Выдержанный красный чай с ярким, насыщенным ароматом кураги, вкусом сухофруктов и сладким послевкусием.',
+                'origin' => 'Китай, Юньнань',
+                'age' => 10,
+                'price' => 3800,
+                'stock' => 10,
+                'image' => 'teas/red.jpg',
+                'brewing_temperature' => '90-95°C',
+                'recommended_ware' => 'Гайвань',
+            ],
+            // добавить ещё
         ];
 
         foreach ($teas as $tea) {

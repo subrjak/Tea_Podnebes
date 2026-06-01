@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import api from '../../api/api';
+import styles from './CatalogPage.module.css';
 import TeaCard from '../../components/TeaCard';
 
 const CatalogPage = () => {
@@ -32,9 +33,9 @@ const CatalogPage = () => {
     if (error) return <div>{error}</div>;
 
     return (
-        <div>
+        <div className={styles['catalog-page']}>
             <h1>Каталог чая</h1>
-            <div className="tea-grid">
+            <div className={styles['catalog-grid']}>
                 {teas.map(tea => (
                     <TeaCard key={tea.id} tea={tea} onAddToCart={handleAddToCart} />
                 ))}

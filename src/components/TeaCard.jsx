@@ -5,11 +5,15 @@ const TeaCard = ({ tea, onAddToCart }) => {
     <div className="tea-card">
       <Link to={`/tea/${tea.slug}`}>
         <img src={tea.image || '/placeholder.jpg'} alt={tea.name} />
-        <h3>{tea.name}</h3>
-        <p>{tea.category?.name || 'Без категории'}</p>
-        <p>Цена: {tea.price} ₸</p>
       </Link>
-      <button onClick={() => onAddToCart(tea)}>В корзину</button>
+      <div className="card-body">
+        <Link to={`/tea/${tea.slug}`}>
+          <h3>{tea.name}</h3>
+        </Link>
+        <p>{tea.category?.name || 'Без категории'}</p>
+        <p className="price">{tea.price} ₸ за 100 грамм</p>
+        <button onClick={() => onAddToCart(tea)}>В корзину</button>
+      </div>
     </div>
   );
 };

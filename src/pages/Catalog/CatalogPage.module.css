@@ -1,0 +1,77 @@
+.catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.catalog-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tea-card {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(4px);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+
+.tea-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.tea-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.tea-card .card-body {
+  padding: 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.tea-card h3 {
+  margin: 0 0 8px;
+  font-size: 1.25rem;
+  color: #2d3e1f;
+}
+
+.tea-card p {
+  margin: 4px 0;
+  color: #5a5a5a;
+}
+
+.tea-card .price {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #b45f2a;
+}
+
+.tea-card button {
+  background: #6b8e4e;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 10px;
+}
+
+.tea-card button:hover {
+  background: #56733e;
+}
