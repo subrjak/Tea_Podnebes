@@ -3,7 +3,7 @@ import { useCart } from '../../contexts/CartContext';
 import { getWeightLabel } from '../../utils/teaWeights';
 import styles from './CartPage.module.css';
 
-const formatPrice = (value) => `${Number(value || 0).toLocaleString('ru-RU')} ₽`;
+const formatPrice = (value) => `${Number(value || 0).toLocaleString('ru-RU')} \u20B8`;
 const formatWeight = (value) => `${Number(value || 0).toLocaleString('ru-RU')} г`;
 
 const CartPage = () => {

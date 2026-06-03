@@ -5,7 +5,7 @@ import { useCart } from '../../contexts/CartContext';
 import { getWeightLabel } from '../../utils/teaWeights';
 import styles from './CheckoutPage.module.css';
 
-const formatPrice = (value) => `${Number(value || 0).toLocaleString('ru-RU')} ₽`;
+const formatPrice = (value) => `${Number(value || 0).toLocaleString('ru-RU')} \u20B8`;
 
 const CheckoutPage = () => {
   const navigate = useNavigate();
@@ -234,7 +234,7 @@ const CheckoutPage = () => {
                 )}
                 <div>
                   <strong>Сумма к оплате: {formatPrice(totalPrice)}</strong>
-                  <p>Положите банковский QR-код в public/img/payment/qr.png. После оплаты администратор сверит заказ и подтвердит детали.</p>
+                  <p>После оплаты администратор сверит заказ и подтвердит детали.</p>
                 </div>
               </div>
             )}
