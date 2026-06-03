@@ -3,7 +3,7 @@ import { useCart } from '../../contexts/CartContext';
 import { getWeightLabel } from '../../utils/teaWeights';
 import styles from './CartPage.module.css';
 
-const formatPrice = (value) => `${Number(value || 0).toLocaleString('ru-RU')} ₸`;
+const formatPrice = (value) => `${Number(value || 0).toLocaleString('ru-RU')} ₽`;
 const formatWeight = (value) => `${Number(value || 0).toLocaleString('ru-RU')} г`;
 
 const CartPage = () => {
@@ -98,11 +98,11 @@ const CartPage = () => {
             <span>К оплате</span>
             <strong>{formatPrice(totalPrice)}</strong>
           </div>
-          <button className={styles.checkoutButton} type="button">
+          <Link className={styles.checkoutButton} to="/checkout">
             Оформить заказ
-          </button>
+          </Link>
           <p className={styles.summaryHint}>
-            Оформление заказа можно подключить следующим этапом: контакты, доставка и сохранение заказа на сервере.
+            На следующем шаге укажите контакты, адрес доставки и выберите оплату: QR онлайн или наличными при получении.
           </p>
           <button className={styles.clearButton} type="button" onClick={clearCart}>
             Очистить корзину
