@@ -19,17 +19,7 @@ class TelegramOrderService
                 'chat_id' => $this->chatId(),
                 'text' => $this->buildOrderText($order),
                 'parse_mode' => 'HTML',
-                'reply_markup' => [
-                    'inline_keyboard' => [
-                        [
-                            ['text' => 'Подтвердить', 'callback_data' => "order:confirm:{$order->id}"],
-                            ['text' => 'Отклонить', 'callback_data' => "order:reject:{$order->id}"],
-                        ],
-                        [
-                            ['text' => 'Оплачен', 'callback_data' => "order:paid:{$order->id}"],
-                        ],
-                    ],
-                ],
+                'reply_markup' => $this->buildOrderKeyboard($order),
             ]);
 
             if (!$response->successful()) {
@@ -75,6 +65,7 @@ class TelegramOrderService
             'message_id' => $order->telegram_message_id,
             'text' => $this->buildOrderText($order),
             'parse_mode' => 'HTML',
+            'reply_markup' => $this->buildOrderKeyboard($order),
         ]);
     }
 
@@ -96,7 +87,7 @@ class TelegramOrderService
         $items = $order->items
             ->map(fn ($item) => sprintf(
                 "• %s, %d г x%d — %s ₸",
-                $item->tea_name,
+                e($item->tea_name),
                 $item->weight,
                 $item->quantity,
                 number_format($item->total_price, 0, '.', ' ')
@@ -109,11 +100,11 @@ class TelegramOrderService
             "Оплата: {$paymentMethod}",
             '',
             "<b>Клиент</b>",
-            "Имя: {$order->customer_name}",
-            "Телефон: {$order->customer_phone}",
-            $order->customer_telegram ? "Telegram: {$order->customer_telegram}" : null,
-            $order->delivery_address ? "Адрес: {$order->delivery_address}" : null,
-            $order->comment ? "Комментарий: {$order->comment}" : null,
+            'Имя: ' . e($order->customer_name),
+            'Телефон: ' . e($order->customer_phone),
+            $order->customer_telegram ? 'Telegram: ' . e($order->customer_telegram) : null,
+            $order->delivery_address ? 'Адрес: ' . e($order->delivery_address) : null,
+            $order->comment ? 'Комментарий: ' . e($order->comment) : null,
             '',
             "<b>Товары</b>",
             $items,
@@ -121,6 +112,21 @@ class TelegramOrderService
             "Вес: {$order->total_weight} г",
             'Сумма: <b>' . number_format($order->total_price, 0, '.', ' ') . ' ₸</b>',
         ], fn ($line) => $line !== null));
+    }
+
+    private function buildOrderKeyboard(Order $order): array
+    {
+        return [
+            'inline_keyboard' => [
+                [
+                    ['text' => 'Принять', 'callback_data' => "order:confirm:{$order->id}"],
+                    ['text' => 'Отклонить', 'callback_data' => "order:reject:{$order->id}"],
+                ],
+                [
+                    ['text' => 'Оплачен', 'callback_data' => "order:paid:{$order->id}"],
+                ],
+            ],
+        ];
     }
 
     private function isConfigured(): bool

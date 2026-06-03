@@ -119,7 +119,7 @@ const HomePage = () => {
           </p>
           <div className="hero-buttons">
             <a href="/catalog" className="btn btn-primary">Посмотреть каталог</a>
-            <a href="/catalog" className="btn btn-link">Подобрать чай -&gt;</a>
+            <a href="/tea-ceremony" className="btn btn-link">О чайной церемонии -&gt;</a>
           </div>
         </div>
       </section>

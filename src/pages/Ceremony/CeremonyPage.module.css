@@ -1,0 +1,322 @@
+.ceremonyPage {
+  width: 100%;
+  max-width: 1180px;
+  margin: 36px auto 68px;
+  padding: 0 20px;
+}
+
+.hero,
+.textPanel,
+.notePanel,
+.significance,
+.stepsSection,
+.toolsSection {
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(226, 217, 207, 0.9);
+  box-shadow: 0 18px 40px rgba(46, 36, 24, 0.12);
+  backdrop-filter: blur(8px);
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 28px;
+  align-items: center;
+  overflow: hidden;
+  min-height: 430px;
+  border-radius: 24px;
+}
+
+.heroText {
+  padding: 42px;
+}
+
+.kicker {
+  display: block;
+  margin-bottom: 10px;
+  color: #b45f2b;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hero h1,
+.textPanel h2,
+.notePanel h2,
+.significance h2,
+.stepsSection h2,
+.toolsContent h2 {
+  margin: 0;
+  color: #2d3e1f;
+  line-height: 1.12;
+}
+
+.hero h1 {
+  max-width: 720px;
+  font-size: 3rem;
+}
+
+.hero p,
+.textPanel p,
+.notePanel p,
+.meaningGrid p,
+.step p {
+  color: #6b5a48;
+  line-height: 1.65;
+}
+
+.hero p {
+  max-width: 650px;
+  margin: 18px 0 24px;
+  font-size: 1.05rem;
+}
+
+.hero a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 12px 22px;
+  color: white;
+  font: inherit;
+  font-weight: 800;
+  text-decoration: none;
+  background: #6b8e4e;
+  border: 1px solid #6b8e4e;
+  border-radius: 999px;
+  box-shadow: 0 10px 18px rgba(74, 107, 60, 0.18);
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.hero a:hover {
+  background: #56733e;
+  border-color: #56733e;
+  transform: translateY(-2px);
+}
+
+.heroImage {
+  height: 100%;
+  min-height: 430px;
+}
+
+.heroImage img,
+.toolsImage img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.articleGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 330px;
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.textPanel,
+.notePanel,
+.significance,
+.stepsSection,
+.toolsSection {
+  border-radius: 24px;
+}
+
+.textPanel {
+  padding: 30px;
+}
+
+.textPanel h2,
+.significance h2,
+.stepsSection h2,
+.toolsContent h2 {
+  font-size: 2rem;
+}
+
+.textPanel p {
+  margin: 16px 0 0;
+}
+
+.notePanel {
+  align-self: stretch;
+  padding: 28px;
+  background: #fff5ea;
+  border-color: #ecd9c2;
+}
+
+.notePanel h2 {
+  font-size: 1.45rem;
+}
+
+.notePanel p {
+  margin: 14px 0 0;
+  font-weight: 700;
+}
+
+.significance,
+.stepsSection {
+  margin-top: 18px;
+  padding: 30px;
+}
+
+.meaningGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 22px;
+}
+
+.meaningGrid article,
+.step {
+  background: #fefaf5;
+  border: 1px solid #efe2d4;
+  border-radius: 18px;
+}
+
+.meaningGrid article {
+  padding: 20px;
+}
+
+.meaningGrid h3,
+.step h3 {
+  margin: 0;
+  color: #3b2c1f;
+}
+
+.meaningGrid p,
+.step p {
+  margin: 10px 0 0;
+}
+
+.sectionHeader {
+  max-width: 680px;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 22px;
+}
+
+.step {
+  padding: 20px;
+}
+
+.step span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  margin-bottom: 16px;
+  color: white;
+  font-size: 0.92rem;
+  font-weight: 900;
+  background: #b45f2b;
+  border-radius: 999px;
+}
+
+.toolsSection {
+  display: grid;
+  grid-template-columns: 340px minmax(0, 1fr);
+  gap: 0;
+  overflow: hidden;
+  margin-top: 18px;
+}
+
+.toolsImage {
+  min-height: 420px;
+}
+
+.toolsContent {
+  padding: 34px;
+}
+
+.toolsContent ul {
+  display: grid;
+  gap: 12px;
+  margin: 22px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.toolsContent li {
+  position: relative;
+  padding: 14px 16px 14px 42px;
+  color: #5e4b34;
+  font-weight: 700;
+  line-height: 1.5;
+  background: #fefaf5;
+  border: 1px solid #efe2d4;
+  border-radius: 16px;
+}
+
+.toolsContent li::before {
+  content: '';
+  position: absolute;
+  top: 20px;
+  left: 18px;
+  width: 10px;
+  height: 10px;
+  background: #6b8e4e;
+  border-radius: 50%;
+}
+
+@media (max-width: 980px) {
+  .hero,
+  .articleGrid,
+  .toolsSection {
+    grid-template-columns: 1fr;
+  }
+
+  .heroImage,
+  .toolsImage {
+    min-height: 300px;
+  }
+
+  .meaningGrid,
+  .steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .ceremonyPage {
+    margin: 22px auto 42px;
+    padding: 0 14px;
+  }
+
+  .heroText,
+  .textPanel,
+  .notePanel,
+  .significance,
+  .stepsSection,
+  .toolsContent {
+    padding: 22px;
+  }
+
+  .hero h1 {
+    font-size: 2.1rem;
+  }
+
+  .textPanel h2,
+  .significance h2,
+  .stepsSection h2,
+  .toolsContent h2 {
+    font-size: 1.65rem;
+  }
+
+  .hero a {
+    width: 100%;
+  }
+
+  .meaningGrid,
+  .steps {
+    grid-template-columns: 1fr;
+  }
+}

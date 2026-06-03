@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 function Footer() {
   return (
@@ -8,11 +9,11 @@ function Footer() {
           <div className="footer-column">
             <h4>Узнать больше</h4>
             <ul>
-              <li><a href="#">Главная</a></li>
-              <li><a href="#">Каталог</a></li>
-              <li><a href="#">Корзина</a></li>
+              <li><Link to="/">Главная</Link></li>
+              <li><Link to="/catalog">Каталог</Link></li>
+              <li><Link to="/cart">Корзина</Link></li>
               <li><a href="#">О китайском чае</a></li>
-              <li><a href="#">О чайной церемонии</a></li>
+              <li><Link to="/tea-ceremony">О чайной церемонии</Link></li>
             </ul>
           </div>
           <div className="footer-column">

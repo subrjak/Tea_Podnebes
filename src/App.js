@@ -7,6 +7,7 @@ import TeaDetailPage from './pages/Catalog/TeaDetailPage';
 import CatalogPage from './pages/Catalog/CatalogPage';
 import CartPage from './pages/Cart/CartPage';
 import CheckoutPage from './pages/Checkout/CheckoutPage';
+import CeremonyPage from './pages/Ceremony/CeremonyPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ProfilePage from './pages/ProfilePage';
@@ -35,6 +36,7 @@ function App() {
           <Route path="/catalog" element={<CatalogPage />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/tea-ceremony" element={<CeremonyPage />} />
           <Route path="/tea/:slug" element={<TeaDetailPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
