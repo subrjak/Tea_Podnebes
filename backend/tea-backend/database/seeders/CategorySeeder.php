@@ -12,17 +12,20 @@ class CategorySeeder extends Seeder
      * Run the database seeds.
      */
     public function run()
-{
-    $categories = [
+    {
+        $categories = [
         ['name' => 'Зелёный', 'slug' => 'green'],
         ['name' => 'Чёрный', 'slug' => 'black'],
         ['name' => 'Улун', 'slug' => 'oolong'],
         ['name' => 'Пуэр', 'slug' => 'puer'],
         ['name' => 'Белый', 'slug' => 'white'],
         ['name' => 'Красный', 'slug' => 'red'],
-    ];
-    foreach ($categories as $cat) {
-        Category::create($cat);
+        ];
+        foreach ($categories as $cat) {
+            Category::updateOrCreate(
+                ['slug' => $cat['slug']],
+                ['name' => $cat['name']]
+            );
+        }
     }
-}
 }

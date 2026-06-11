@@ -324,7 +324,10 @@ TEXT,
         ];
 
         foreach ($teas as $tea) {
-            Tea::create($tea);
+            Tea::updateOrCreate(
+                ['slug' => $tea['slug']],
+                $tea
+            );
         }
     }
 }

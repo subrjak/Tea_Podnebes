@@ -21,9 +21,11 @@ class DatabaseSeeder extends Seeder
             TeaSeeder::class,
         ]);
         
-        User::factory()->create([
-            'name' => 'Test User',
+        User::firstOrCreate([
             'email' => 'test@example.com',
+        ], [
+            'name' => 'Test User',
+            'password' => 'password',
         ]);
     }
 }
