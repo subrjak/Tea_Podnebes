@@ -60,7 +60,8 @@
         "post-install-cmd": [
             "@php artisan clear-compiled",
             "@php artisan route:clear",
-            "@php artisan config:clear"
+            "@php artisan config:clear",
+            "@php artisan route:cache"
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
