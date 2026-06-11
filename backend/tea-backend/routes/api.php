@@ -20,3 +20,6 @@ Route::post('/orders', [OrderController::class, 'store']);
 Route::post('/telegram/webhook/{secret}', [TelegramWebhookController::class, 'handle']);
 
 Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
+Route::get('/ping', function () {
+    return response()->json(['pong' => true]);
+});
