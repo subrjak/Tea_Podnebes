@@ -12,7 +12,6 @@ function Footer() {
               <li><Link to="/">Главная</Link></li>
               <li><Link to="/catalog">Каталог</Link></li>
               <li><Link to="/cart">Корзина</Link></li>
-              <li><a href="/">О китайском чае</a></li>
               <li><Link to="/tea-ceremony">О чайной церемонии</Link></li>
             </ul>
           </div>

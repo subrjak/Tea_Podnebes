@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Order extends Model
@@ -20,6 +21,7 @@ class Order extends Model
 
     protected $fillable = [
         'order_number',
+        'user_id',
         'customer_name',
         'customer_phone',
         'customer_telegram',
@@ -30,6 +32,8 @@ class Order extends Model
         'status',
         'total_weight',
         'total_quantity',
+        'discount_percent',
+        'subtotal_price',
         'total_price',
         'telegram_message_id',
     ];
@@ -37,8 +41,15 @@ class Order extends Model
     protected $casts = [
         'total_weight' => 'integer',
         'total_quantity' => 'integer',
+        'discount_percent' => 'integer',
+        'subtotal_price' => 'integer',
         'total_price' => 'integer',
     ];
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function items(): HasMany
     {

@@ -3,22 +3,27 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\AuthController;
 use App\Models\Order;
 use App\Models\Tea;
 use App\Services\TelegramOrderService;
+use App\Support\CustomerStatus;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Rule;
 
 class OrderController extends Controller
 {
     public function store(Request $request, TelegramOrderService $telegram): JsonResponse
     {
+        $user = AuthController::userFromToken($request);
+
         $validated = $request->validate([
             'customer.name' => ['required', 'string', 'max:255'],
-            'customer.phone' => ['required', 'string', 'max:50'],
+            'customer.phone' => ['nullable', 'string', 'max:50'],
             'customer.telegram' => ['nullable', 'string', 'max:100'],
             'customer.address' => ['nullable', 'string', 'max:1000'],
             'customer.comment' => ['nullable', 'string', 'max:1000'],
@@ -29,12 +34,41 @@ class OrderController extends Controller
             'items.*.quantity' => ['required', 'integer', 'min:1', 'max:99'],
         ]);
 
-        $order = DB::transaction(function () use ($validated) {
+        $customer = [
+            'name' => $validated['customer']['name'] ?: $user->name,
+            'phone' => $validated['customer']['phone'] ?: $user->profile_phone,
+            'telegram' => $validated['customer']['telegram'] ?? $user->profile_telegram,
+            'address' => $validated['customer']['address'] ?? $user->profile_address,
+            'comment' => $validated['customer']['comment'] ?? null,
+        ];
+
+        if (!filled($customer['phone']) || !filled($customer['address'])) {
+            throw ValidationException::withMessages([
+                'customer' => ['Заполните телефон и адрес в профиле или форме заказа.'],
+            ]);
+        }
+
+        $order = DB::transaction(function () use ($validated, $customer, $user) {
             $teas = Tea::query()
                 ->with('category:id,name')
                 ->whereIn('id', collect($validated['items'])->pluck('id'))
+                ->lockForUpdate()
                 ->get()
                 ->keyBy('id');
+
+            $requestedByTea = collect($validated['items'])
+                ->groupBy('id')
+                ->map(fn ($items) => $items->sum('quantity'));
+
+            foreach ($requestedByTea as $teaId => $quantity) {
+                $tea = $teas->get((int) $teaId);
+
+                if (!$tea || $tea->stock < $quantity) {
+                    throw ValidationException::withMessages([
+                        'items' => ["Недостаточно товара «{$tea?->name}» на складе."],
+                    ]);
+                }
+            }
 
             $items = collect($validated['items'])->map(function ($cartItem) use ($teas) {
                 $tea = $teas->get($cartItem['id']);
@@ -56,22 +90,34 @@ class OrderController extends Controller
                 ];
             });
 
+            $subtotalPrice = $items->sum('total_price');
+            $status = CustomerStatus::fromQuantity($user->purchasedQuantity());
+            $discountPercent = (int) $status['discount'];
+            $totalPrice = (int) round($subtotalPrice * (100 - $discountPercent) / 100);
+
             $order = Order::create([
+                'user_id' => $user->id,
                 'order_number' => now()->format('ymd') . '-' . Str::upper(Str::random(5)),
-                'customer_name' => $validated['customer']['name'],
-                'customer_phone' => $validated['customer']['phone'],
-                'customer_telegram' => $validated['customer']['telegram'] ?? null,
-                'delivery_address' => $validated['customer']['address'] ?? null,
-                'comment' => $validated['customer']['comment'] ?? null,
+                'customer_name' => $customer['name'],
+                'customer_phone' => $customer['phone'],
+                'customer_telegram' => $customer['telegram'],
+                'delivery_address' => $customer['address'],
+                'comment' => $customer['comment'],
                 'payment_method' => $validated['payment_method'],
                 'payment_status' => $validated['payment_method'] === Order::PAYMENT_QR ? 'pending' : 'cash_on_delivery',
                 'status' => Order::STATUS_PENDING,
                 'total_weight' => $items->sum(fn ($item) => $item['weight'] * $item['quantity']),
                 'total_quantity' => $items->sum('quantity'),
-                'total_price' => $items->sum('total_price'),
+                'discount_percent' => $discountPercent,
+                'subtotal_price' => $subtotalPrice,
+                'total_price' => $totalPrice,
             ]);
 
             $order->items()->createMany($items->all());
+
+            foreach ($requestedByTea as $teaId => $quantity) {
+                $teas->get((int) $teaId)->decrement('stock', (int) $quantity);
+            }
 
             return $order->load('items');
         });
@@ -86,5 +132,19 @@ class OrderController extends Controller
             'order' => $order->fresh('items'),
             'telegram_sent' => filled($messageId),
         ], 201);
+    }
+
+    public function index(Request $request): JsonResponse
+    {
+        $user = AuthController::userFromToken($request);
+
+        $orders = $user->orders()
+            ->with('items')
+            ->latest()
+            ->get();
+
+        return response()->json([
+            'orders' => $orders,
+        ]);
     }
 }

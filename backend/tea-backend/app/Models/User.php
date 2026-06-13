@@ -4,8 +4,11 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
+use App\Support\CustomerStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
@@ -21,6 +24,9 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'profile_phone',
+        'profile_telegram',
+        'profile_address',
         'password',
         'api_token',
         'is_admin',
@@ -50,5 +56,27 @@ class User extends Authenticatable
             'password' => 'hashed',
             'is_admin' => 'boolean',
         ];
+    }
+
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function favoriteTeas(): BelongsToMany
+    {
+        return $this->belongsToMany(Tea::class, 'favorite_tea_user')->withTimestamps();
+    }
+
+    public function purchasedQuantity(): int
+    {
+        return (int) $this->orders()
+            ->where('status', '!=', Order::STATUS_REJECTED)
+            ->sum('total_quantity');
+    }
+
+    public function customerStatus(): array
+    {
+        return CustomerStatus::fromQuantity($this->purchasedQuantity());
     }
 }
