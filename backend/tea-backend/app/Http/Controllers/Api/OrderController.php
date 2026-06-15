@@ -36,7 +36,7 @@ class OrderController extends Controller
 
         $customer = [
             'name' => $validated['customer']['name'] ?: $user->name,
-            'phone' => $validated['customer']['phone'] ?: $user->profile_phone,
+            'phone' => ($validated['customer']['phone'] ?? null) ?: $user->profile_phone,
             'telegram' => $validated['customer']['telegram'] ?? $user->profile_telegram,
             'address' => $validated['customer']['address'] ?? $user->profile_address,
             'comment' => $validated['customer']['comment'] ?? null,

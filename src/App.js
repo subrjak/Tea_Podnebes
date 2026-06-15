@@ -11,6 +11,8 @@ import CeremonyPage from './pages/Ceremony/CeremonyPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ProfilePage from './pages/ProfilePage';
+import FaqPage from './pages/FaqPage';
+import ContactsPage from './pages/ContactsPage';
 import AdminDashboardPage from './pages/Admin/AdminDashboardPage';
 import PrivateRoute from './components/PrivateRoute';
 import AdminRoute from './components/AdminRoute';
@@ -35,8 +37,17 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/catalog" element={<CatalogPage />} />
           <Route path="/cart" element={<CartPage />} />
-          <Route path="/checkout" element={<CheckoutPage />} />
+          <Route
+            path="/checkout"
+            element={
+              <PrivateRoute>
+                <CheckoutPage />
+              </PrivateRoute>
+            }
+          />
           <Route path="/tea-ceremony" element={<CeremonyPage />} />
+          <Route path="/faq" element={<FaqPage />} />
+          <Route path="/contacts" element={<ContactsPage />} />
           <Route path="/tea/:slug" element={<TeaDetailPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />

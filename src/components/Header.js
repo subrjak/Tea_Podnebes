@@ -10,6 +10,7 @@ function Header() {
   const { isAuthenticated, user, logout } = useAuth();
   const { totalQuantity } = useCart();
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+  const [isLogoutConfirmOpen, setIsLogoutConfirmOpen] = useState(false);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -31,6 +32,7 @@ function Header() {
 
   const handleLogout = async () => {
     await logout();
+    setIsLogoutConfirmOpen(false);
     closeMenu();
     navigate('/login');
   };
@@ -81,7 +83,7 @@ function Header() {
                       Админ-панель
                     </NavLink>
                   )}
-                  <button type="button" role="menuitem" onClick={handleLogout}>
+                  <button type="button" role="menuitem" onClick={() => setIsLogoutConfirmOpen(true)}>
                     Выйти
                   </button>
                 </>
@@ -99,6 +101,23 @@ function Header() {
           )}
         </div>
       </div>
+
+      {isLogoutConfirmOpen && (
+        <div className="logout-modal" role="dialog" aria-modal="true" aria-labelledby="logout-title">
+          <div className="logout-modal__content">
+            <h2 id="logout-title">Выйти из аккаунта?</h2>
+            <p>После выхода оформление заказа и избранное будут доступны только после повторного входа.</p>
+            <div className="logout-modal__actions">
+              <button type="button" onClick={() => setIsLogoutConfirmOpen(false)}>
+                Остаться
+              </button>
+              <button type="button" onClick={handleLogout}>
+                Выйти
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 }

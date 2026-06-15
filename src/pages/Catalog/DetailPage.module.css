@@ -136,6 +136,20 @@
   line-height: 1.2;
 }
 
+.stock,
+.stockEmpty {
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.stock {
+  color: #58703f;
+}
+
+.stockEmpty {
+  color: #9b3f2b;
+}
+
 .weightOptions {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(92px, 1fr));
@@ -185,6 +199,7 @@
 }
 
 .addButton,
+.favoriteButton,
 .secondaryButton {
   display: inline-flex;
   align-items: center;
@@ -214,6 +229,36 @@
   background: #56733e;
   border-color: #56733e;
   transform: translateY(-2px);
+}
+
+.addButton:disabled,
+.favoriteButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+  transform: none;
+}
+
+.favoriteButton {
+  color: #b45f2b;
+  background: #fff5ea;
+  border: 1px solid #ecd9c2;
+}
+
+.favoriteActive {
+  color: white;
+  background: #b45f2b;
+  border-color: #b45f2b;
+}
+
+.notice {
+  margin-top: 4px;
+  padding: 10px 12px;
+  color: #4f6d38;
+  font-size: 0.9rem;
+  font-weight: 800;
+  background: #f0f7ec;
+  border: 1px solid #d7e8cf;
+  border-radius: 14px;
 }
 
 .secondaryButton {
@@ -386,6 +431,7 @@
   }
 
   .addButton,
+  .favoriteButton,
   .secondaryButton {
     width: 100%;
   }

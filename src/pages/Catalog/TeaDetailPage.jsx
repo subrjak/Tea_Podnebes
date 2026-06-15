@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import api from '../../api/api';
+import { useAuth } from '../../contexts/AuthContexts';
 import { useCart } from '../../contexts/CartContext';
+import { useFavorites } from '../../contexts/FavoritesContext';
 import { getTeaWeightOptions, getWeightLabel, getWeightPrice, isPressedTea } from '../../utils/teaWeights';
 import styles from './DetailPage.module.css';
 
@@ -9,12 +11,15 @@ const formatPrice = (value) => `${Number(value || 0).toLocaleString('ru-RU')} �
 
 const TeaDetailPage = () => {
   const { slug } = useParams();
+  const { isAuthenticated } = useAuth();
   const { addItem } = useCart();
+  const { isFavorite, toggleFavorite } = useFavorites();
   const [tea, setTea] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedWeight, setSelectedWeight] = useState(100);
-  const [isAdded, setIsAdded] = useState(false);
+  const [notice, setNotice] = useState(null);
+  const [favoriteBusy, setFavoriteBusy] = useState(false);
 
   useEffect(() => {
     const fetchTea = async () => {
@@ -43,9 +48,21 @@ const TeaDetailPage = () => {
   if (!tea) return <div className={styles.notFound}>Чай не найден</div>;
 
   const handleAddToCart = () => {
-    addItem(tea, selectedWeight);
-    setIsAdded(true);
-    window.setTimeout(() => setIsAdded(false), 1400);
+    const result = addItem(tea, selectedWeight);
+    setNotice(result.ok ? 'Товар добавлен в корзину' : result.message);
+    window.setTimeout(() => setNotice(null), 1800);
+  };
+
+  const handleFavoriteClick = async () => {
+    if (!isAuthenticated || favoriteBusy) return;
+
+    setFavoriteBusy(true);
+
+    try {
+      await toggleFavorite(tea);
+    } finally {
+      setFavoriteBusy(false);
+    }
   };
 
   const formatTemperature = (value) => {
@@ -63,6 +80,7 @@ const TeaDetailPage = () => {
     { label: 'Температура воды', value: formatTemperature(tea.brewing_temperature) },
     { label: 'Посуда', value: tea.recommended_ware || 'Не указано' },
   ];
+  const inStock = Number(tea.stock) > 0;
 
   return (
     <div className={styles.teaDetail}>
@@ -106,14 +124,27 @@ const TeaDetailPage = () => {
             )}
             <span className={styles.priceLabel}>Цена за выбранную фасовку</span>
             <strong className={styles.price}>{formatPrice(selectedPrice)}</strong>
+            <span className={inStock ? styles.stock : styles.stockEmpty}>
+              {inStock ? `На складе: ${tea.stock} шт.` : 'Нет в наличии'}
+            </span>
             <div className={styles.actions}>
-              <button className={styles.addButton} onClick={handleAddToCart}>
-                {isAdded ? 'Добавлено' : 'Добавить в корзину'}
+              <button className={styles.addButton} disabled={!inStock} onClick={handleAddToCart}>
+                Добавить в корзину
+              </button>
+              <button
+                className={`${styles.favoriteButton} ${isFavorite(tea.id) ? styles.favoriteActive : ''}`}
+                type="button"
+                disabled={!isAuthenticated || favoriteBusy}
+                title={isAuthenticated ? 'Избранное' : 'Войдите, чтобы добавить в избранное'}
+                onClick={handleFavoriteClick}
+              >
+                {isFavorite(tea.id) ? 'В избранном' : 'В избранное'}
               </button>
               <Link className={styles.secondaryButton} to="/catalog">
                 Смотреть еще
               </Link>
             </div>
+            {notice && <div className={styles.notice} role="status">{notice}</div>}
           </div>
 
           <div className={styles.quickSpecs}>

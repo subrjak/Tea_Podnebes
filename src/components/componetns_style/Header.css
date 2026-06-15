@@ -160,6 +160,65 @@
     white-space: nowrap;
 }
 
+.logout-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 300;
+    display: grid;
+    place-items: center;
+    padding: 20px;
+    background: rgba(33, 27, 20, 0.45);
+}
+
+.logout-modal__content {
+    width: min(420px, 100%);
+    padding: 24px;
+    background: #fffdf9;
+    border: 1px solid #efe2d4;
+    border-radius: 20px;
+    box-shadow: 0 24px 48px rgba(46, 36, 24, 0.24);
+}
+
+.logout-modal__content h2 {
+    margin: 0 0 8px;
+    color: #2d3e1f;
+    font-size: 1.35rem;
+}
+
+.logout-modal__content p {
+    margin: 0;
+    color: #6b5a48;
+    line-height: 1.55;
+}
+
+.logout-modal__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.logout-modal__actions button {
+    min-height: 42px;
+    padding: 10px 18px;
+    font: inherit;
+    font-weight: 800;
+    border-radius: 999px;
+    cursor: pointer;
+}
+
+.logout-modal__actions button:first-child {
+    color: #4a3b2c;
+    background: transparent;
+    border: 1px solid #d6bb9b;
+}
+
+.logout-modal__actions button:last-child {
+    color: white;
+    background: #9b3f2b;
+    border: 1px solid #9b3f2b;
+}
+
 .profile-dropdown__user strong {
     color: #2d3e1f;
     font-size: 0.98rem;

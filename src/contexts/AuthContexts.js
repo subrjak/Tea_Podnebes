@@ -24,6 +24,12 @@ export const AuthProvider = ({ children }) => {
       .finally(() => setInitializing(false));
   }, []);
 
+  const refreshUser = async () => {
+    const res = await api.get('/me');
+    setUser(res.data.user);
+    return res.data.user;
+  };
+
   const login = async (credentials) => {
     const res = await api.post('/login', credentials);
     localStorage.setItem('token', res.data.token);
@@ -34,6 +40,12 @@ export const AuthProvider = ({ children }) => {
   const register = async (data) => {
     const res = await api.post('/register', data);
     localStorage.setItem('token', res.data.token);
+    setUser(res.data.user);
+    return res.data.user;
+  };
+
+  const updateProfile = async (data) => {
+    const res = await api.put('/profile', data);
     setUser(res.data.user);
     return res.data.user;
   };
@@ -53,6 +65,8 @@ export const AuthProvider = ({ children }) => {
     isAuthenticated: Boolean(user),
     login,
     register,
+    updateProfile,
+    refreshUser,
     logout,
   }), [user, initializing]);
 

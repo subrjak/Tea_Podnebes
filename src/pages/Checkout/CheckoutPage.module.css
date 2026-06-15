@@ -300,7 +300,8 @@
   white-space: nowrap;
 }
 
-.totalRow {
+.totalRow,
+.discountRow {
   display: flex;
   justify-content: space-between;
   gap: 14px;
@@ -314,6 +315,19 @@
 .totalRow strong {
   color: #b45f2a;
   font-size: 1.4rem;
+}
+
+.discountRow {
+  margin: -4px 0 4px;
+  padding: 12px;
+  color: #58703f;
+  background: #f0f7ec;
+  border: 1px solid #d7e8cf;
+  border-radius: 14px;
+}
+
+.discountRow strong {
+  color: #58703f;
 }
 
 .submitButton {

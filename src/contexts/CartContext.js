@@ -18,6 +18,7 @@ const normalizeTea = (tea, weight = DEFAULT_WEIGHT) => {
     weight: selectedWeight,
     image: tea.image || '/placeholder.jpg',
     category: tea.category || null,
+    stock: Math.max(0, Number(tea.stock) || 0),
   };
 };
 
@@ -32,6 +33,7 @@ const migrateCartItem = (item) => {
     price,
     linePrice: Number(item.linePrice) || Math.round(price * (weight / 100)),
     quantity: Number(item.quantity) || 1,
+    stock: Math.max(0, Number(item.stock) || 0),
   };
 };
 
@@ -52,37 +54,79 @@ export const CartProvider = ({ children }) => {
 
   const addItem = (tea, weight = DEFAULT_WEIGHT) => {
     const cartTea = normalizeTea(tea, weight);
+    let result = { ok: true };
 
     setItems((currentItems) => {
       const existingItem = currentItems.find((item) => item.cartKey === cartTea.cartKey);
+      const currentTeaQuantity = currentItems
+        .filter((item) => item.id === cartTea.id)
+        .reduce((sum, item) => sum + item.quantity, 0);
+
+      if (currentTeaQuantity >= cartTea.stock) {
+        result = {
+          ok: false,
+          message: cartTea.stock > 0
+            ? `На складе доступно ${cartTea.stock} шт.`
+            : 'Товара сейчас нет на складе.',
+        };
+        return currentItems;
+      }
 
       if (existingItem) {
         return currentItems.map((item) => (
           item.cartKey === cartTea.cartKey
-            ? { ...item, quantity: item.quantity + 1 }
+            ? { ...item, quantity: item.quantity + 1, stock: cartTea.stock }
             : item
         ));
       }
 
       return [...currentItems, { ...cartTea, quantity: 1 }];
     });
+
+    return result;
   };
 
   const updateQuantity = (cartKey, quantity) => {
     const nextQuantity = Number(quantity);
 
-    setItems((currentItems) => currentItems
-      .map((item) => (
-        item.cartKey === cartKey
-          ? { ...item, quantity: Math.max(1, nextQuantity || 1) }
-          : item
-      )));
+    setItems((currentItems) => {
+      const targetItem = currentItems.find((item) => item.cartKey === cartKey);
+
+      if (!targetItem) return currentItems;
+
+      const otherQuantity = currentItems
+        .filter((item) => item.id === targetItem.id && item.cartKey !== cartKey)
+        .reduce((sum, item) => sum + item.quantity, 0);
+      const availableForItem = Math.max(0, targetItem.stock - otherQuantity);
+
+      return currentItems
+        .map((item) => (
+          item.cartKey === cartKey
+            ? { ...item, quantity: Math.max(0, Math.min(Math.max(1, nextQuantity || 1), availableForItem)) }
+            : item
+        ))
+        .filter((item) => item.quantity > 0);
+    });
   };
 
   const incrementItem = (cartKey) => {
-    setItems((currentItems) => currentItems.map((item) => (
-      item.cartKey === cartKey ? { ...item, quantity: item.quantity + 1 } : item
-    )));
+    setItems((currentItems) => {
+      const targetItem = currentItems.find((item) => item.cartKey === cartKey);
+
+      if (!targetItem) return currentItems;
+
+      const currentTeaQuantity = currentItems
+        .filter((item) => item.id === targetItem.id)
+        .reduce((sum, item) => sum + item.quantity, 0);
+
+      if (currentTeaQuantity >= targetItem.stock) {
+        return currentItems;
+      }
+
+      return currentItems.map((item) => (
+        item.cartKey === cartKey ? { ...item, quantity: item.quantity + 1 } : item
+      ));
+    });
   };
 
   const decrementItem = (cartKey) => {

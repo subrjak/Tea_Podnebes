@@ -18,14 +18,14 @@ function Footer() {
           <div className="footer-column">
             <h4>Помощь</h4>
             <ul>
-              <li><a href="/">F.A.Q</a></li>
-              <li><a href="/">Контакты</a></li>
+              <li><Link to="/faq">F.A.Q</Link></li>
+              <li><Link to="/contacts">Контакты</Link></li>
             </ul>
           </div>
           <div className="footer-column">
             <h4>О компании</h4>
             <ul>
-              <li><a href="/">Где мы находимся</a></li>
+              <li><Link to="/contacts">Где мы находимся</Link></li>
             </ul>
             <div className="social">
               <p>Наши соц сети:</p>

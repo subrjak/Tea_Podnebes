@@ -110,6 +110,9 @@ class TelegramOrderService
             $items,
             '',
             "Вес: {$order->total_weight} г",
+            $order->discount_percent > 0
+                ? 'Скидка: ' . $order->discount_percent . '% (без скидки ' . number_format($order->subtotal_price, 0, '.', ' ') . ' ₸)'
+                : null,
             'Сумма: <b>' . number_format($order->total_price, 0, '.', ' ') . ' ₸</b>',
         ], fn ($line) => $line !== null));
     }

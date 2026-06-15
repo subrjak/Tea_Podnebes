@@ -156,6 +156,12 @@
   box-shadow: 0 14px 26px rgba(74, 107, 60, 0.2);
 }
 
+.cartNoticeError {
+  color: #9b3f2b;
+  background: #fff1ec;
+  border-color: #f1c7b8;
+}
+
 .status,
 .emptyState {
   width: calc(100% - 40px);

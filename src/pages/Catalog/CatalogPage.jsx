@@ -10,7 +10,7 @@ const CatalogPage = () => {
   const [teas, setTeas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [addedTeaId, setAddedTeaId] = useState(null);
+  const [notice, setNotice] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [maxPrice, setMaxPrice] = useState('');
@@ -73,9 +73,12 @@ const CatalogPage = () => {
   }, [teas, searchQuery, selectedCategory, maxPrice]);
 
   const handleAddToCart = (tea, weight) => {
-    addItem(tea, weight);
-    setAddedTeaId(`${tea.id}-${weight}`);
-    window.setTimeout(() => setAddedTeaId(null), 1400);
+    const result = addItem(tea, weight);
+    setNotice({
+      type: result.ok ? 'success' : 'error',
+      text: result.ok ? 'Товар добавлен в корзину' : result.message,
+    });
+    window.setTimeout(() => setNotice(null), 1800);
   };
 
   const resetFilters = () => {
@@ -143,9 +146,9 @@ const CatalogPage = () => {
         </div>
       </section>
 
-      {addedTeaId && (
-        <div className={styles.cartNotice} role="status">
-          Товар добавлен в корзину
+      {notice && (
+        <div className={`${styles.cartNotice} ${notice.type === 'error' ? styles.cartNoticeError : ''}`} role="status">
+          {notice.text}
         </div>
       )}
 

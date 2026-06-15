@@ -11,7 +11,7 @@ class TeaController extends Controller
     public function index()
     {
         $teas = Tea::with('category:id,name,slug')
-            ->select('id', 'name', 'slug', 'price', 'image', 'category_id')
+            ->select('id', 'name', 'slug', 'price', 'stock', 'image', 'category_id')
             ->paginate(12);
         return response()->json($teas);
     }

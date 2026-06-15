@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../../api/api';
+import { useAuth } from '../../contexts/AuthContexts';
 import { useCart } from '../../contexts/CartContext';
 import { getWeightLabel } from '../../utils/teaWeights';
 import styles from './CheckoutPage.module.css';
@@ -9,19 +10,22 @@ const formatPrice = (value) => `${Number(value || 0).toLocaleString('ru-RU')} \u
 
 const CheckoutPage = () => {
   const navigate = useNavigate();
+  const { user, refreshUser } = useAuth();
   const { items, totalQuantity, totalWeight, totalPrice, clearCart } = useCart();
   const [paymentMethod, setPaymentMethod] = useState('');
   const [qrAvailable, setQrAvailable] = useState(true);
   const [form, setForm] = useState({
-    name: '',
-    phone: '',
-    telegram: '',
-    address: '',
+    name: user?.name || '',
+    phone: user?.profile_phone || '',
+    telegram: user?.profile_telegram || '',
+    address: user?.profile_address || '',
     comment: '',
   });
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
   const [createdOrder, setCreatedOrder] = useState(null);
+  const discountPercent = Number(user?.discount_percent) || 0;
+  const discountedTotal = Math.round(totalPrice * (100 - discountPercent) / 100);
 
   const contactDataFilled = Boolean(
     form.name.trim()
@@ -77,6 +81,7 @@ const CheckoutPage = () => {
       const res = await api.post('/orders', orderPayload);
       setCreatedOrder(res.data.order);
       clearCart();
+      refreshUser();
     } catch (err) {
       setError(err.response?.data?.message || 'Не удалось оформить заказ. Проверьте данные и попробуйте снова.');
     } finally {
@@ -233,7 +238,7 @@ const CheckoutPage = () => {
                   <div className={styles.qrPlaceholder}>QR</div>
                 )}
                 <div>
-                  <strong>Сумма к оплате: {formatPrice(totalPrice)}</strong>
+                  <strong>Сумма к оплате: {formatPrice(discountedTotal)}</strong>
                   <p>После оплаты администратор сверит заказ и подтвердит детали.</p>
                 </div>
               </div>
@@ -255,8 +260,16 @@ const CheckoutPage = () => {
             ))}
           </div>
           <div className={styles.totalRow}>
-            <span>Итого</span>
+            <span>Сумма</span>
             <strong>{formatPrice(totalPrice)}</strong>
+          </div>
+          <div className={styles.discountRow}>
+            <span>{user?.customer_status || 'Обычный покупатель'}</span>
+            <strong>{discountPercent > 0 ? `-${discountPercent}%` : 'Без скидки'}</strong>
+          </div>
+          <div className={styles.totalRow}>
+            <span>К оплате</span>
+            <strong>{formatPrice(discountedTotal)}</strong>
           </div>
           {error && <div className={styles.error}>{error}</div>}
           <button className={styles.submitButton} type="submit" disabled={submitting}>
