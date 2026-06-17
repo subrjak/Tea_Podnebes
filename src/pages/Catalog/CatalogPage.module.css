@@ -103,7 +103,8 @@
 }
 
 .resetButton,
-.emptyState button {
+.emptyState button,
+.loadMoreButton {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -124,11 +125,22 @@
 }
 
 .resetButton:hover,
-.emptyState button:hover {
+.emptyState button:hover,
+.loadMoreButton:hover:not(:disabled) {
   color: #b45f2b;
   background: #fff5ea;
   border-color: #b45f2b;
   transform: translateY(-2px);
+}
+
+.loadMoreButton {
+  margin: -34px auto 64px;
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.loadMoreButton:disabled {
+  cursor: wait;
+  opacity: 0.68;
 }
 
 .catalogGrid {
