@@ -86,9 +86,6 @@ const CatalogPage = () => {
           ...nextMeta,
         }));
 
-        if (nextMeta.max_price) {
-          setMaxPrice((currentMaxPrice) => currentMaxPrice || String(nextMeta.max_price));
-        }
       } catch (err) {
         if (!active) return;
         setError('Не удалось загрузить каталог');
@@ -120,7 +117,7 @@ const CatalogPage = () => {
   const resetFilters = () => {
     setSearchQuery('');
     setSelectedCategory('all');
-    setMaxPrice(meta.max_price ? String(meta.max_price) : '');
+    setMaxPrice('');
     setPage(1);
   };
 
@@ -167,13 +164,13 @@ const CatalogPage = () => {
           </label>
 
           <label className={`${styles.field} ${styles.priceField}`}>
-            <span>Цена до {Number(maxPrice || 0).toLocaleString('ru-RU')} ₸</span>
+            <span>Цена до {Number(maxPrice || meta.max_price || 0).toLocaleString('ru-RU')} ₸</span>
             <input
               type="range"
               min="0"
-              max={meta.max_price}
+              max={meta.max_price || 0}
               step="100"
-              value={maxPrice || meta.max_price}
+              value={maxPrice || meta.max_price || 0}
               onChange={(event) => setMaxPrice(event.target.value)}
               disabled={!meta.max_price}
             />
