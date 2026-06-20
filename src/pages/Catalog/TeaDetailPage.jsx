@@ -20,6 +20,9 @@ const TeaDetailPage = () => {
   const [selectedWeight, setSelectedWeight] = useState(100);
   const [notice, setNotice] = useState(null);
   const [favoriteBusy, setFavoriteBusy] = useState(false);
+  const [review, setReview] = useState({ rating: 5, text: '' });
+  const [reviewSaving, setReviewSaving] = useState(false);
+  const [reviewMessage, setReviewMessage] = useState(null);
 
   useEffect(() => {
     const fetchTea = async () => {
@@ -62,6 +65,33 @@ const TeaDetailPage = () => {
       await toggleFavorite(tea);
     } finally {
       setFavoriteBusy(false);
+    }
+  };
+
+  const submitReview = async (event) => {
+    event.preventDefault();
+    setReviewSaving(true);
+    setReviewMessage(null);
+
+    try {
+      const res = await api.post('/reviews', {
+        type: 'tea',
+        id: tea.id,
+        rating: Number(review.rating),
+        text: review.text,
+      });
+      setTea((currentTea) => ({
+        ...currentTea,
+        reviews: [res.data.review, ...(currentTea.reviews || [])],
+      }));
+      setReview({ rating: 5, text: '' });
+      setReviewMessage('Спасибо, отзыв опубликован.');
+    } catch (err) {
+      const validation = err.response?.data?.errors;
+      const firstValidationMessage = validation ? Object.values(validation).flat()[0] : null;
+      setReviewMessage(firstValidationMessage || err.response?.data?.message || 'Не удалось отправить отзыв.');
+    } finally {
+      setReviewSaving(false);
     }
   };
 
@@ -177,6 +207,43 @@ const TeaDetailPage = () => {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className={styles.reviewsPanel}>
+        <span className={styles.sectionKicker}>Отзывы</span>
+        <h2>Что говорят о чае</h2>
+        {isAuthenticated ? (
+          <form className={styles.reviewForm} onSubmit={submitReview}>
+            <select
+              value={review.rating}
+              onChange={(event) => setReview((currentReview) => ({ ...currentReview, rating: event.target.value }))}
+            >
+              {[5, 4, 3, 2, 1].map((rating) => (
+                <option key={rating} value={rating}>{rating} из 5</option>
+              ))}
+            </select>
+            <textarea
+              value={review.text}
+              onChange={(event) => setReview((currentReview) => ({ ...currentReview, text: event.target.value }))}
+              placeholder="Поделитесь впечатлением о чае"
+              required
+            />
+            <button type="submit" disabled={reviewSaving}>{reviewSaving ? 'Отправляем...' : 'Оставить отзыв'}</button>
+            {reviewMessage && <p className={styles.reviewMessage}>{reviewMessage}</p>}
+          </form>
+        ) : (
+          <p className={styles.emptyReviews}>Войдите в аккаунт, чтобы оставить отзыв.</p>
+        )}
+
+        <div className={styles.reviewsList}>
+          {(tea.reviews || []).map((item) => (
+            <div className={styles.reviewItem} key={item.id}>
+              <strong>{item.user?.name || 'Пользователь'} / {item.rating} из 5</strong>
+              <p>{item.text}</p>
+            </div>
+          ))}
+          {!(tea.reviews || []).length && <p className={styles.emptyReviews}>Отзывов пока нет.</p>}
         </div>
       </section>
     </div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Api\AuthController;
+use App\Models\DiscountEvent;
 use App\Models\Order;
 use App\Models\Tea;
 use App\Services\TelegramOrderService;
@@ -92,7 +93,17 @@ class OrderController extends Controller
 
             $subtotalPrice = $items->sum('total_price');
             $status = CustomerStatus::fromQuantity($user->purchasedQuantity());
-            $discountPercent = (int) $status['discount'];
+            $statusDiscount = min((int) $status['discount'], 20);
+            $eventDiscount = (int) DiscountEvent::query()
+                ->where('is_active', true)
+                ->where(function ($query) {
+                    $query->whereNull('starts_at')->orWhere('starts_at', '<=', now());
+                })
+                ->where(function ($query) {
+                    $query->whereNull('ends_at')->orWhere('ends_at', '>=', now());
+                })
+                ->max('discount_percent');
+            $discountPercent = max($statusDiscount, $eventDiscount);
             $totalPrice = (int) round($subtotalPrice * (100 - $discountPercent) / 100);
 
             $order = Order::create([

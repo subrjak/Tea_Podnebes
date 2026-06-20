@@ -51,6 +51,7 @@ function Header() {
         <nav className="nav">
           <NavLink to="/" end>Главная</NavLink>
           <NavLink to="/catalog">Каталог</NavLink>
+          <NavLink to="/blog">Блог</NavLink>
           <NavLink className="cart-link" to="/cart">
             Корзина
             {totalQuantity > 0 && <span className="cart-count">{totalQuantity}</span>}

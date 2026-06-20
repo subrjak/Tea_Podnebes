@@ -13,9 +13,13 @@ import RegisterPage from './pages/RegisterPage';
 import ProfilePage from './pages/ProfilePage';
 import FaqPage from './pages/FaqPage';
 import ContactsPage from './pages/ContactsPage';
+import BlogPage from './pages/Blog/BlogPage';
+import BlogPostPage from './pages/Blog/BlogPostPage';
 import AdminDashboardPage from './pages/Admin/AdminDashboardPage';
 import AdminTeasPage from './pages/Admin/AdminTeasPage';
 import AdminUsersPage from './pages/Admin/AdminUsersPage';
+import AdminBlogPage from './pages/Admin/AdminBlogPage';
+import AdminDiscountsPage from './pages/Admin/AdminDiscountsPage';
 import PrivateRoute from './components/PrivateRoute';
 import AdminRoute from './components/AdminRoute';
 import './styles/index.css';
@@ -38,6 +42,8 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/catalog" element={<CatalogPage />} />
+          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/blog/:slug" element={<BlogPostPage />} />
           <Route path="/cart" element={<CartPage />} />
           <Route
             path="/checkout"
@@ -86,6 +92,22 @@ function App() {
             }
           />
           <Route path="*" element={<div className="auth-status">Страница не найдена</div>} />
+          <Route
+            path="/admin/blog"
+            element={
+              <AdminRoute>
+                <AdminBlogPage />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/discounts"
+            element={
+              <AdminRoute>
+                <AdminDiscountsPage />
+              </AdminRoute>
+            }
+          />
         </Routes>
       </main>
       <Footer />

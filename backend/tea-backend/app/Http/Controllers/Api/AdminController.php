@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\BlogCategory;
+use App\Models\BlogPost;
 use App\Models\Category;
+use App\Models\DiscountEvent;
 use App\Models\OrderItem;
 use App\Models\Tea;
 use App\Models\User;
@@ -181,6 +184,108 @@ class AdminController extends Controller
         ]);
     }
 
+    public function blog(Request $request): JsonResponse
+    {
+        $this->adminFromToken($request);
+
+        return response()->json([
+            'categories' => BlogCategory::query()
+                ->orderBy('sort_order')
+                ->get(['id', 'name', 'slug', 'sort_order']),
+            'posts' => BlogPost::query()
+                ->with('category:id,name,slug')
+                ->latest()
+                ->get(['id', 'blog_category_id', 'title', 'slug', 'excerpt', 'content', 'image', 'is_published', 'published_at', 'created_at']),
+        ]);
+    }
+
+    public function storeBlogPost(Request $request): JsonResponse
+    {
+        $user = $this->adminFromToken($request);
+        $validated = $this->validateBlogPost($request);
+
+        $post = BlogPost::create([
+            ...$validated,
+            'author_id' => $user->id,
+            'slug' => $validated['slug'] ?: $this->uniqueBlogSlug($validated['title']),
+            'is_published' => (bool) ($validated['is_published'] ?? true),
+            'published_at' => ($validated['is_published'] ?? true) ? now() : null,
+        ]);
+
+        return response()->json([
+            'message' => 'Статья добавлена.',
+            'post' => $post->load('category:id,name,slug'),
+        ], 201);
+    }
+
+    public function updateBlogPost(Request $request, BlogPost $post): JsonResponse
+    {
+        $this->adminFromToken($request);
+        $validated = $this->validateBlogPost($request, $post);
+        $wasPublished = $post->is_published;
+
+        $post->update([
+            ...$validated,
+            'slug' => $validated['slug'] ?: $post->slug,
+            'is_published' => (bool) ($validated['is_published'] ?? true),
+            'published_at' => (!$wasPublished && ($validated['is_published'] ?? true)) ? now() : $post->published_at,
+        ]);
+
+        return response()->json([
+            'message' => 'Статья обновлена.',
+            'post' => $post->fresh('category:id,name,slug'),
+        ]);
+    }
+
+    public function destroyBlogPost(Request $request, BlogPost $post): JsonResponse
+    {
+        $this->adminFromToken($request);
+        $post->delete();
+
+        return response()->json(['message' => 'Статья удалена.']);
+    }
+
+    public function discountEvents(Request $request): JsonResponse
+    {
+        $user = $this->adminFromToken($request);
+
+        if (!$user->canManageUsers()) {
+            abort(403, 'Событийные скидки могут устанавливать только Владелец и Старший администратор.');
+        }
+
+        return response()->json([
+            'events' => DiscountEvent::query()->latest()->get(),
+        ]);
+    }
+
+    public function storeDiscountEvent(Request $request): JsonResponse
+    {
+        $user = $this->adminFromToken($request);
+
+        if (!$user->canManageUsers()) {
+            abort(403, 'Событийные скидки могут устанавливать только Владелец и Старший администратор.');
+        }
+
+        $validated = $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'discount_percent' => ['required', 'integer', 'min:1', 'max:80'],
+            'starts_at' => ['nullable', 'date'],
+            'ends_at' => ['nullable', 'date', 'after_or_equal:starts_at'],
+            'is_active' => ['boolean'],
+        ]);
+
+        $event = DiscountEvent::create([
+            ...$validated,
+            'created_by' => $user->id,
+            'is_active' => (bool) ($validated['is_active'] ?? false),
+        ]);
+
+        return response()->json([
+            'message' => 'Событийная скидка создана.',
+            'event' => $event,
+        ], 201);
+    }
+
     private function adminFromToken(Request $request): User
     {
         $token = $request->bearerToken();
@@ -245,6 +350,38 @@ class AdminController extends Controller
             User::ROLE_ADMIN => 'Админ',
             User::ROLE_WAREHOUSE_MANAGER => 'Заведующий складом',
         ];
+    }
+
+    private function validateBlogPost(Request $request, ?BlogPost $post = null): array
+    {
+        return $request->validate([
+            'blog_category_id' => ['required', 'integer', 'exists:blog_categories,id'],
+            'title' => ['required', 'string', 'max:255'],
+            'slug' => [
+                'nullable',
+                'string',
+                'max:255',
+                Rule::unique('blog_posts', 'slug')->ignore($post?->id),
+            ],
+            'excerpt' => ['nullable', 'string', 'max:500'],
+            'content' => ['required', 'string', 'max:20000'],
+            'image' => ['nullable', 'string', 'max:1000'],
+            'is_published' => ['boolean'],
+        ]);
+    }
+
+    private function uniqueBlogSlug(string $title): string
+    {
+        $base = Str::slug($title) ?: 'post-' . Str::lower(Str::random(6));
+        $slug = $base;
+        $suffix = 2;
+
+        while (BlogPost::where('slug', $slug)->exists()) {
+            $slug = "{$base}-{$suffix}";
+            $suffix++;
+        }
+
+        return $slug;
     }
 
     private function resolveTeaImage(Request $request, ?string $image): ?string

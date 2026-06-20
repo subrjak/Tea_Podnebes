@@ -61,7 +61,7 @@ class TeaController extends Controller
     public function show($slug)
     {
         $tea = Tea::where('slug', $slug)
-            ->with('category:id,name,slug')
+            ->with(['category:id,name,slug', 'reviews.user:id,name'])
             ->firstOrFail();
         return response()->json($tea);
     }

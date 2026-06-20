@@ -32,6 +32,7 @@ const AdminDashboardPage = () => {
     { label: 'Категории', value: dashboard.stats.categories },
   ];
   const canManageUsers = dashboard.permissions?.users;
+  const canManageInventory = dashboard.permissions?.inventory;
 
   return (
     <div className={styles.adminPage}>
@@ -42,7 +43,9 @@ const AdminDashboardPage = () => {
           <p>{dashboard.admin.admin_status || 'Администратор'}</p>
         </div>
         <div className={styles.heroActions}>
-          <Link to="/admin/teas">Добавить товар</Link>
+          {canManageInventory && <Link to="/admin/teas">Товары</Link>}
+          <Link to="/admin/blog">Блог</Link>
+          {canManageUsers && <Link to="/admin/discounts">Скидки</Link>}
           {canManageUsers && <Link to="/admin/users">Роли</Link>}
           <Link to="/profile">Открыть профиль</Link>
         </div>

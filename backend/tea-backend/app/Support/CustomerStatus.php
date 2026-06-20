@@ -9,25 +9,25 @@ class CustomerStatus
         return match (true) {
             $quantity >= 50 => [
                 'title' => 'Чайный мастер',
-                'discount' => 35,
+                'discount' => 20,
                 'next_title' => null,
                 'next_quantity' => null,
             ],
             $quantity >= 30 => [
                 'title' => 'Чайный гуру',
-                'discount' => 25,
+                'discount' => 15,
                 'next_title' => 'Чайный мастер',
                 'next_quantity' => 50,
             ],
             $quantity >= 15 => [
                 'title' => 'Чайный пьяница',
-                'discount' => 18,
+                'discount' => 10,
                 'next_title' => 'Чайный гуру',
                 'next_quantity' => 30,
             ],
             $quantity >= 8 => [
                 'title' => 'Чайный знаток',
-                'discount' => 10,
+                'discount' => 7,
                 'next_title' => 'Чайный пьяница',
                 'next_quantity' => 15,
             ],
