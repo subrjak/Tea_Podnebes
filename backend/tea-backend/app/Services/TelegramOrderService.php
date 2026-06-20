@@ -214,11 +214,22 @@ class TelegramOrderService
             Log::warning('Telegram API request exception', [
                 'method' => $method,
                 'context' => $context,
-                'message' => $exception->getMessage(),
+                'message' => $this->redactToken($exception->getMessage()),
             ]);
 
             return null;
         }
+    }
+
+    private function redactToken(string $message): string
+    {
+        $token = (string) $this->token();
+
+        if ($token === '') {
+            return $message;
+        }
+
+        return str_replace($token, '[telegram-bot-token]', $message);
     }
 
     private function token(): ?string
