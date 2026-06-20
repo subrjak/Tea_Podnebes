@@ -2,8 +2,10 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContexts';
 
 const hasInventoryAccess = (user) => {
+  if (user?.permissions?.inventory) return true;
+
   const status = (user?.admin_status || '').toLowerCase();
-  return status.includes('админ') || status.includes('заведующий складом');
+  return status.includes('админ') || status.includes('владелец') || status.includes('заведующий складом');
 };
 
 const AdminRoute = ({ children, inventoryOnly = false }) => {
@@ -18,7 +20,10 @@ const AdminRoute = ({ children, inventoryOnly = false }) => {
     return <Navigate to="/login" replace state={{ from: location }} />;
   }
 
-  if (inventoryOnly ? !hasInventoryAccess(user) : !user?.is_admin) {
+  const canOpenAdmin = user?.permissions?.admin || user?.is_admin;
+  const allowed = inventoryOnly ? hasInventoryAccess(user) : canOpenAdmin;
+
+  if (!allowed) {
     return <Navigate to="/profile" replace />;
   }
 

@@ -58,7 +58,6 @@
   justify-content: flex-end;
 }
 
-.hero a,
 .formActions button,
 .formActions a {
   display: inline-flex;
@@ -73,7 +72,26 @@
   border-radius: 40px;
 }
 
-.hero a:nth-child(2),
+.hero a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 12px 22px;
+  color: #4a3b2c;
+  font-weight: 800;
+  text-decoration: none;
+  background: transparent;
+  border: 1px solid #d6bb9b;
+  border-radius: 40px;
+}
+
+.hero a:first-child {
+  color: white;
+  background: #6b8e4e;
+  border-color: #6b8e4e;
+}
+
 .formActions a {
   color: #4a3b2c;
   background: transparent;
@@ -162,6 +180,25 @@
   white-space: nowrap;
 }
 
+.tableActions {
+  display: grid;
+  justify-items: end;
+  gap: 8px;
+}
+
+.tableActions button {
+  min-height: 34px;
+  padding: 7px 12px;
+  color: #87352b;
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 900;
+  background: #fdebe7;
+  border: 1px solid #efc8bf;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
 .teaForm {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -204,6 +241,61 @@
   background: #fff;
   border-color: #b45f2b;
   box-shadow: 0 0 0 3px rgba(180, 95, 43, 0.12);
+}
+
+.dropZone {
+  padding: 16px;
+  background: #fefaf5;
+  border: 1px dashed #d6bb9b;
+  border-radius: 18px;
+  cursor: pointer;
+}
+
+.dropZoneActive {
+  background: #f0f7ec;
+  border-color: #6b8e4e;
+}
+
+.dropZone input {
+  min-height: auto;
+  padding: 0;
+  background: transparent;
+  border: 0;
+}
+
+.dropZone strong {
+  color: #3b2c1f;
+  font-size: 0.94rem;
+  overflow-wrap: anywhere;
+}
+
+.roleSelect {
+  display: grid;
+  gap: 6px;
+  min-width: 230px;
+}
+
+.roleSelect span {
+  color: #7d6850;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.roleSelect select {
+  min-height: 42px;
+  padding: 9px 12px;
+  color: #3b2c1f;
+  font: inherit;
+  font-weight: 700;
+  background: #fff;
+  border: 1px solid #efe2d4;
+  border-radius: 14px;
+}
+
+.roleSelect select:disabled {
+  color: #7d6850;
+  background: #f4eee8;
+  cursor: not-allowed;
 }
 
 .fullField,
@@ -267,6 +359,10 @@
   .tableRow {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .tableActions {
+    justify-items: start;
   }
 
   .heroActions {

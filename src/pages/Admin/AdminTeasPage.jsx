@@ -19,8 +19,10 @@ const emptyForm = {
 };
 
 const canManageTeas = (user) => {
+  if (user?.permissions?.inventory) return true;
+
   const status = (user?.admin_status || '').toLowerCase();
-  return status.includes('админ') || status.includes('заведующий складом');
+  return status.includes('админ') || status.includes('владелец') || status.includes('заведующий складом');
 };
 
 const formatPrice = (value) => `${Number(value || 0).toLocaleString('ru-RU')} ₸`;
@@ -32,6 +34,8 @@ const AdminTeasPage = () => {
   const [teas, setTeas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [imageFile, setImageFile] = useState(null);
+  const [dragging, setDragging] = useState(false);
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
   const allowed = useMemo(() => canManageTeas(user), [user]);
@@ -63,6 +67,13 @@ const AdminTeasPage = () => {
     setForm((currentForm) => ({ ...currentForm, [name]: value }));
   };
 
+  const handleImageSelect = (file) => {
+    if (!file) return;
+
+    setImageFile(file);
+    setForm((currentForm) => ({ ...currentForm, image: '' }));
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setSaving(true);
@@ -70,16 +81,29 @@ const AdminTeasPage = () => {
     setError(null);
 
     try {
-      const payload = {
+      const payload = new FormData();
+      Object.entries({
         ...form,
         category_id: Number(form.category_id),
         age: Number(form.age),
         price: Number(form.price),
         stock: Number(form.stock),
-      };
-      const res = await api.post('/admin/teas', payload);
+      }).forEach(([key, value]) => {
+        if (value !== null && value !== undefined && value !== '') {
+          payload.append(key, value);
+        }
+      });
+
+      if (imageFile) {
+        payload.append('image_file', imageFile);
+      }
+
+      const res = await api.post('/admin/teas', payload, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
       setTeas((currentTeas) => [res.data.tea, ...currentTeas].slice(0, 30));
       setMessage(res.data.message || 'Товар добавлен.');
+      setImageFile(null);
       setForm({
         ...emptyForm,
         category_id: form.category_id,
@@ -91,6 +115,23 @@ const AdminTeasPage = () => {
       setError(firstValidationMessage || err.response?.data?.message || 'Не удалось добавить товар.');
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleDelete = async (tea) => {
+    const confirmed = window.confirm(`Удалить товар «${tea.name}» из каталога?`);
+
+    if (!confirmed) return;
+
+    setMessage(null);
+    setError(null);
+
+    try {
+      await api.delete(`/admin/teas/${tea.id}`);
+      setTeas((currentTeas) => currentTeas.filter((currentTea) => currentTea.id !== tea.id));
+      setMessage('Товар удален из каталога.');
+    } catch (err) {
+      setError(err.response?.data?.message || 'Не удалось удалить товар.');
     }
   };
 
@@ -115,7 +156,7 @@ const AdminTeasPage = () => {
           <p>{user?.admin_status || 'Сотрудник'}</p>
         </div>
         <div className={styles.heroActions}>
-          {user?.is_admin && <Link to="/admin">Админ-панель</Link>}
+          {(user?.permissions?.admin || user?.is_admin) && <Link to="/admin">Админ-панель</Link>}
           <Link to="/catalog">Каталог</Link>
         </div>
       </section>
@@ -169,6 +210,27 @@ const AdminTeasPage = () => {
               <span>Путь к изображению</span>
               <input name="image" value={form.image} onChange={handleChange} placeholder="/img/teas/example.jpg или https://..." />
             </label>
+            <label
+              className={`${styles.fullField} ${styles.dropZone} ${dragging ? styles.dropZoneActive : ''}`}
+              onDragOver={(event) => {
+                event.preventDefault();
+                setDragging(true);
+              }}
+              onDragLeave={() => setDragging(false)}
+              onDrop={(event) => {
+                event.preventDefault();
+                setDragging(false);
+                handleImageSelect(event.dataTransfer.files?.[0]);
+              }}
+            >
+              <span>Изображение с компьютера</span>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(event) => handleImageSelect(event.target.files?.[0])}
+              />
+              <strong>{imageFile ? imageFile.name : 'Перетащите файл сюда или выберите на ПК'}</strong>
+            </label>
             <label className={styles.fullField}>
               <span>Рекомендуемая посуда</span>
               <input name="recommended_ware" value={form.recommended_ware} onChange={handleChange} />
@@ -200,7 +262,10 @@ const AdminTeasPage = () => {
                     <strong>{tea.name}</strong>
                     <span>{tea.category?.name || 'Без категории'} / {tea.origin}</span>
                   </div>
-                  <em>{formatPrice(tea.price)} / {tea.stock} шт.</em>
+                  <div className={styles.tableActions}>
+                    <em>{formatPrice(tea.price)} / {tea.stock} шт.</em>
+                    <button type="button" onClick={() => handleDelete(tea)}>Удалить</button>
+                  </div>
                 </div>
               ))}
             </div>

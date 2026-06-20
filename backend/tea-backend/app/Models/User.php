@@ -16,6 +16,11 @@ class User extends Authenticatable
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
+    public const ROLE_OWNER = 'Владелец';
+    public const ROLE_SENIOR_ADMIN = 'Старший администратор';
+    public const ROLE_ADMIN = 'Действующий админ';
+    public const ROLE_WAREHOUSE_MANAGER = 'Заведующий складом';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -78,5 +83,27 @@ class User extends Authenticatable
     public function customerStatus(): array
     {
         return CustomerStatus::fromQuantity($this->purchasedQuantity());
+    }
+
+    public function hasAdminAccess(): bool
+    {
+        return $this->is_admin || in_array($this->admin_status, [
+            self::ROLE_OWNER,
+            self::ROLE_SENIOR_ADMIN,
+            self::ROLE_ADMIN,
+        ], true);
+    }
+
+    public function canManageInventory(): bool
+    {
+        return $this->hasAdminAccess() || $this->admin_status === self::ROLE_WAREHOUSE_MANAGER;
+    }
+
+    public function canManageUsers(): bool
+    {
+        return in_array($this->admin_status, [
+            self::ROLE_OWNER,
+            self::ROLE_SENIOR_ADMIN,
+        ], true);
     }
 }

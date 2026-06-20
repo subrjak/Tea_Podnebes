@@ -23,8 +23,10 @@ const PAYMENT_STATUS = {
 };
 
 const canManageTeas = (user) => {
+  if (user?.permissions?.inventory) return true;
+
   const status = (user?.admin_status || '').toLowerCase();
-  return status.includes('админ') || status.includes('заведующий складом');
+  return status.includes('админ') || status.includes('владелец') || status.includes('заведующий складом');
 };
 
 const ProfilePage = () => {
@@ -128,9 +130,9 @@ const ProfilePage = () => {
         </div>
 
         <div className={styles.infoGrid}>
-          <div className={user?.is_admin ? styles.adminStatus : undefined}>
+          <div className={user?.admin_status ? styles.adminStatus : undefined}>
             <span>Статус</span>
-            <strong>{user?.is_admin ? (user?.admin_status || 'Действующий админ') : user?.customer_status}</strong>
+            <strong>{user?.admin_status || user?.customer_status}</strong>
           </div>
           <div>
             <span>Скидка</span>
@@ -157,8 +159,8 @@ const ProfilePage = () => {
         </div>
 
         <div className={styles.actions}>
-          {user?.is_admin && <Link to="/admin">Открыть админ-панель</Link>}
-          {!user?.is_admin && canManageTeas(user) && <Link to="/admin/teas">Открыть склад</Link>}
+          {(user?.permissions?.admin || user?.is_admin) && <Link to="/admin">Открыть админ-панель</Link>}
+          {!(user?.permissions?.admin || user?.is_admin) && canManageTeas(user) && <Link to="/admin/teas">Открыть склад</Link>}
           <Link to="/catalog">Перейти в каталог</Link>
           <Link to="/cart">Открыть корзину</Link>
           <button type="button" onClick={() => setIsLogoutConfirmOpen(true)}>Выйти</button>

@@ -28,7 +28,7 @@ class AuthController extends Controller
             'password' => $validated['password'],
             'api_token' => hash('sha256', $token),
             'is_admin' => $validated['name'] === 'Богдан',
-            'admin_status' => $validated['name'] === 'Богдан' ? 'Действующий админ' : null,
+            'admin_status' => $validated['name'] === 'Богдан' ? User::ROLE_OWNER : null,
         ]);
 
         return response()->json([
@@ -129,6 +129,11 @@ class AuthController extends Controller
             'profile_address' => $user->profile_address,
             'is_admin' => $user->is_admin,
             'admin_status' => $user->admin_status,
+            'permissions' => [
+                'admin' => $user->hasAdminAccess(),
+                'inventory' => $user->canManageInventory(),
+                'users' => $user->canManageUsers(),
+            ],
             'created_at' => $user->created_at,
             'purchased_quantity' => $user->purchasedQuantity(),
             'customer_status' => $status['title'],

@@ -28,6 +28,9 @@ Route::post('/telegram/webhook/{secret}', [TelegramWebhookController::class, 'ha
 Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
 Route::get('/admin/teas', [AdminController::class, 'teas']);
 Route::post('/admin/teas', [AdminController::class, 'storeTea']);
+Route::delete('/admin/teas/{tea}', [AdminController::class, 'destroyTea']);
+Route::get('/admin/users', [AdminController::class, 'users']);
+Route::put('/admin/users/{user}/role', [AdminController::class, 'updateUserRole']);
 Route::get('/ping', function () {
     return response()->json(['pong' => true]);
 });

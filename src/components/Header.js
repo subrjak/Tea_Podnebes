@@ -12,7 +12,11 @@ function Header() {
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [isLogoutConfirmOpen, setIsLogoutConfirmOpen] = useState(false);
   const adminStatus = (user?.admin_status || '').toLowerCase();
-  const canManageTeas = adminStatus.includes('админ') || adminStatus.includes('заведующий складом');
+  const canOpenAdmin = user?.permissions?.admin || user?.is_admin;
+  const canManageTeas = user?.permissions?.inventory
+    || adminStatus.includes('админ')
+    || adminStatus.includes('владелец')
+    || adminStatus.includes('заведующий складом');
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -51,8 +55,8 @@ function Header() {
             Корзина
             {totalQuantity > 0 && <span className="cart-count">{totalQuantity}</span>}
           </NavLink>
-          {user?.is_admin && <NavLink to="/admin">Админ</NavLink>}
-          {!user?.is_admin && canManageTeas && <NavLink to="/admin/teas">Склад</NavLink>}
+          {canOpenAdmin && <NavLink to="/admin">Админ</NavLink>}
+          {!canOpenAdmin && canManageTeas && <NavLink to="/admin/teas">Склад</NavLink>}
         </nav>
 
         <div className="profile-menu" ref={menuRef}>
@@ -81,12 +85,12 @@ function Header() {
                   <NavLink to="/profile" role="menuitem" onClick={closeMenu}>
                     Личный кабинет
                   </NavLink>
-                  {user?.is_admin && (
+                  {canOpenAdmin && (
                     <NavLink to="/admin" role="menuitem" onClick={closeMenu}>
                       Админ-панель
                     </NavLink>
                   )}
-                  {!user?.is_admin && canManageTeas && (
+                  {!canOpenAdmin && canManageTeas && (
                     <NavLink to="/admin/teas" role="menuitem" onClick={closeMenu}>
                       Управление складом
                     </NavLink>
