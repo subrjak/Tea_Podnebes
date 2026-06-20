@@ -8,6 +8,20 @@ import styles from './ProfilePage.module.css';
 const formatPrice = (value) => `${Number(value || 0).toLocaleString('ru-RU')} ₸`;
 const formatDate = (value) => (value ? new Date(value).toLocaleDateString('ru-RU') : 'Сегодня');
 
+const ORDER_STATUS = {
+  pending: { label: 'Ожидает подтверждения', tone: 'pending' },
+  confirmed: { label: 'Заказ принят', tone: 'confirmed' },
+  rejected: { label: 'Заказ отклонен', tone: 'rejected' },
+  paid: { label: 'Заказ оплачен', tone: 'paid' },
+};
+
+const PAYMENT_STATUS = {
+  pending: 'Ожидает оплаты',
+  paid: 'Оплата получена',
+  canceled: 'Оплата отменена',
+  cash_on_delivery: 'Оплата при получении',
+};
+
 const ProfilePage = () => {
   const navigate = useNavigate();
   const { user, logout, updateProfile } = useAuth();
@@ -34,17 +48,34 @@ const ProfilePage = () => {
   }, [user]);
 
   useEffect(() => {
-    const loadOrders = async () => {
+    let active = true;
+
+    const loadOrders = async (showLoading = false) => {
+      if (showLoading) {
+        setOrdersLoading(true);
+      }
+
       try {
         const res = await api.get('/orders');
-        setOrders(res.data.orders || []);
+        if (active) {
+          setOrders(res.data.orders || []);
+        }
       } finally {
-        setOrdersLoading(false);
+        if (active) {
+          setOrdersLoading(false);
+        }
       }
     };
 
-    loadOrders();
+    loadOrders(true);
     reloadFavorites();
+
+    const intervalId = window.setInterval(() => loadOrders(false), 15000);
+
+    return () => {
+      active = false;
+      window.clearInterval(intervalId);
+    };
   }, [reloadFavorites]);
 
   const handleChange = (event) => {
@@ -194,8 +225,16 @@ const ProfilePage = () => {
                     <strong>Заказ #{order.order_number}</strong>
                     <span>{formatDate(order.created_at)} / {order.total_quantity} шт.</span>
                   </div>
-                  <em>{formatPrice(order.total_price)}</em>
+                  <div className={styles.orderSummary}>
+                    <span className={`${styles.orderBadge} ${styles[`orderBadge_${ORDER_STATUS[order.status]?.tone || 'pending'}`]}`}>
+                      {ORDER_STATUS[order.status]?.label || 'Статус уточняется'}
+                    </span>
+                    <em>{formatPrice(order.total_price)}</em>
+                  </div>
                 </div>
+                <p className={styles.orderPayment}>
+                  {PAYMENT_STATUS[order.payment_status] || 'Статус оплаты уточняется'}
+                </p>
                 {Number(order.discount_percent) > 0 && (
                   <p className={styles.orderDiscount}>
                     Скидка {order.discount_percent}%: {formatPrice(order.subtotal_price)} -> {formatPrice(order.total_price)}

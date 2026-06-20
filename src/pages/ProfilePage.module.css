@@ -375,6 +375,56 @@
   white-space: nowrap;
 }
 
+.orderSummary {
+  display: grid;
+  justify-items: end;
+  gap: 8px;
+}
+
+.orderBadge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 5px 10px;
+  font-size: 0.78rem;
+  font-weight: 900;
+  line-height: 1.2;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.orderBadge_pending {
+  color: #7a5420;
+  background: #fff4d8;
+  border-color: #ead09a;
+}
+
+.orderBadge_confirmed {
+  color: #355d2a;
+  background: #edf7e6;
+  border-color: #c8dfbd;
+}
+
+.orderBadge_rejected {
+  color: #87352b;
+  background: #fdebe7;
+  border-color: #efc8bf;
+}
+
+.orderBadge_paid {
+  color: #245b4d;
+  background: #e5f7f0;
+  border-color: #b8ded1;
+}
+
+.orderPayment {
+  margin: 10px 0 0;
+  color: #6b5a48;
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
 .orderDiscount {
   margin: 10px 0 0;
   color: #58703f;
@@ -467,6 +517,14 @@
   .orderTopline,
   .modalActions {
     flex-direction: column;
+  }
+
+  .orderSummary {
+    justify-items: start;
+  }
+
+  .orderBadge {
+    white-space: normal;
   }
 
   .modalActions button,
