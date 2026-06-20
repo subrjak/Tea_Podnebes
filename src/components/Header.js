@@ -11,6 +11,8 @@ function Header() {
   const { totalQuantity } = useCart();
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [isLogoutConfirmOpen, setIsLogoutConfirmOpen] = useState(false);
+  const adminStatus = (user?.admin_status || '').toLowerCase();
+  const canManageTeas = adminStatus.includes('админ') || adminStatus.includes('заведующий складом');
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -50,6 +52,7 @@ function Header() {
             {totalQuantity > 0 && <span className="cart-count">{totalQuantity}</span>}
           </NavLink>
           {user?.is_admin && <NavLink to="/admin">Админ</NavLink>}
+          {!user?.is_admin && canManageTeas && <NavLink to="/admin/teas">Склад</NavLink>}
         </nav>
 
         <div className="profile-menu" ref={menuRef}>
@@ -81,6 +84,11 @@ function Header() {
                   {user?.is_admin && (
                     <NavLink to="/admin" role="menuitem" onClick={closeMenu}>
                       Админ-панель
+                    </NavLink>
+                  )}
+                  {!user?.is_admin && canManageTeas && (
+                    <NavLink to="/admin/teas" role="menuitem" onClick={closeMenu}>
+                      Управление складом
                     </NavLink>
                   )}
                   <button type="button" role="menuitem" onClick={() => setIsLogoutConfirmOpen(true)}>

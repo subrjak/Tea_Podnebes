@@ -40,7 +40,10 @@ const AdminDashboardPage = () => {
           <h1>Управление магазином</h1>
           <p>{dashboard.admin.admin_status || 'Администратор'}</p>
         </div>
-        <Link to="/profile">Открыть профиль</Link>
+        <div className={styles.heroActions}>
+          <Link to="/admin/teas">Добавить товар</Link>
+          <Link to="/profile">Открыть профиль</Link>
+        </div>
       </section>
 
       <section className={styles.statsGrid}>

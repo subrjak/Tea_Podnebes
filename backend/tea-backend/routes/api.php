@@ -26,6 +26,8 @@ Route::delete('/favorites/{tea}', [FavoriteController::class, 'destroy']);
 Route::post('/telegram/webhook/{secret}', [TelegramWebhookController::class, 'handle']);
 
 Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
+Route::get('/admin/teas', [AdminController::class, 'teas']);
+Route::post('/admin/teas', [AdminController::class, 'storeTea']);
 Route::get('/ping', function () {
     return response()->json(['pong' => true]);
 });

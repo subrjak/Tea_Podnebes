@@ -14,6 +14,7 @@ import ProfilePage from './pages/ProfilePage';
 import FaqPage from './pages/FaqPage';
 import ContactsPage from './pages/ContactsPage';
 import AdminDashboardPage from './pages/Admin/AdminDashboardPage';
+import AdminTeasPage from './pages/Admin/AdminTeasPage';
 import PrivateRoute from './components/PrivateRoute';
 import AdminRoute from './components/AdminRoute';
 import './styles/index.css';
@@ -64,6 +65,14 @@ function App() {
             element={
               <AdminRoute>
                 <AdminDashboardPage />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/teas"
+            element={
+              <AdminRoute inventoryOnly>
+                <AdminTeasPage />
               </AdminRoute>
             }
           />

@@ -22,6 +22,11 @@ const PAYMENT_STATUS = {
   cash_on_delivery: 'Оплата при получении',
 };
 
+const canManageTeas = (user) => {
+  const status = (user?.admin_status || '').toLowerCase();
+  return status.includes('админ') || status.includes('заведующий складом');
+};
+
 const ProfilePage = () => {
   const navigate = useNavigate();
   const { user, logout, updateProfile } = useAuth();
@@ -153,6 +158,7 @@ const ProfilePage = () => {
 
         <div className={styles.actions}>
           {user?.is_admin && <Link to="/admin">Открыть админ-панель</Link>}
+          {!user?.is_admin && canManageTeas(user) && <Link to="/admin/teas">Открыть склад</Link>}
           <Link to="/catalog">Перейти в каталог</Link>
           <Link to="/cart">Открыть корзину</Link>
           <button type="button" onClick={() => setIsLogoutConfirmOpen(true)}>Выйти</button>
