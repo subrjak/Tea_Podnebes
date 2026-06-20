@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContexts';
 import { useFavorites } from '../contexts/FavoritesContext';
@@ -10,10 +10,18 @@ const TeaCard = ({ tea, onAddToCart }) => {
   const { isAuthenticated } = useAuth();
   const { isFavorite, toggleFavorite } = useFavorites();
   const weightOptions = useMemo(() => getTeaWeightOptions(tea), [tea]);
-  const [selectedWeight, setSelectedWeight] = useState(100);
+  const [selectedWeight, setSelectedWeight] = useState(() => (
+    weightOptions.includes(100) ? 100 : weightOptions[0]
+  ));
   const [favoriteBusy, setFavoriteBusy] = useState(false);
   const selectedPrice = getWeightPrice(tea.price, selectedWeight);
   const inStock = Number(tea.stock) > 0;
+
+  useEffect(() => {
+    if (!weightOptions.includes(selectedWeight)) {
+      setSelectedWeight(weightOptions.includes(100) ? 100 : weightOptions[0]);
+    }
+  }, [selectedWeight, weightOptions]);
 
   const handleFavoriteClick = async () => {
     if (!isAuthenticated || favoriteBusy) return;
