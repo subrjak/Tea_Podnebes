@@ -30,7 +30,7 @@ class OrderController extends Controller
             'payment_method' => ['required', Rule::in([Order::PAYMENT_QR, Order::PAYMENT_CASH])],
             'items' => ['required', 'array', 'min:1'],
             'items.*.id' => ['required', 'integer', 'exists:teas,id'],
-            'items.*.weight' => ['required', 'integer', Rule::in([25, 50, 100, 200, 357])],
+            'items.*.weight' => ['required', 'integer', Rule::in([5, 25, 50, 100, 200, 357])],
             'items.*.quantity' => ['required', 'integer', 'min:1', 'max:99'],
         ]);
 
