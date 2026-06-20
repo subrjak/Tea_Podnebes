@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -22,9 +22,29 @@ import './styles/index.css';
 import bgImage from './assets/background.jpg';
 
 function App() {
+  const [theme, setTheme] = useState(() => {
+    const savedTheme = localStorage.getItem('theme');
+
+    if (savedTheme === 'dark' || savedTheme === 'light') {
+      return savedTheme;
+    }
+
+    return window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  });
+
+  useEffect(() => {
+    localStorage.setItem('theme', theme);
+    document.documentElement.dataset.theme = theme;
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme((currentTheme) => (currentTheme === 'dark' ? 'light' : 'dark'));
+  };
+
   return (
     <div
       className="app-wrapper"
+      data-theme={theme}
       style={{
         backgroundImage: `url(${bgImage})`,
         backgroundSize: 'cover',
@@ -33,7 +53,7 @@ function App() {
         minHeight: '100vh',
       }}
     >
-      <Header />
+      <Header theme={theme} onToggleTheme={toggleTheme} />
       <main className="main-content">
         <Routes>
           <Route path="/" element={<HomePage />} />

@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/AuthContexts';
 import { useCart } from '../contexts/CartContext';
 import './componetns_style/Header.css';
 
-function Header() {
+function Header({ theme, onToggleTheme }) {
   const navigate = useNavigate();
   const menuRef = useRef(null);
   const { isAuthenticated, user, logout } = useAuth();
@@ -59,7 +59,27 @@ function Header() {
           {!canOpenAdmin && canManageTeas && <NavLink to="/admin/teas">Склад</NavLink>}
         </nav>
 
-        <div className="profile-menu" ref={menuRef}>
+        <div className="header-actions">
+          <button
+            className="theme-toggle"
+            type="button"
+            aria-label={theme === 'dark' ? 'Включить светлую тему' : 'Включить тёмную тему'}
+            title={theme === 'dark' ? 'Светлая тема' : 'Тёмная тема'}
+            onClick={onToggleTheme}
+          >
+            {theme === 'dark' ? (
+              <svg width="21" height="21" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 3V5.5M12 18.5V21M5.64 5.64L7.4 7.4M16.6 16.6L18.36 18.36M3 12H5.5M18.5 12H21M5.64 18.36L7.4 16.6M16.6 7.4L18.36 5.64" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                <circle cx="12" cy="12" r="4.2" stroke="currentColor" strokeWidth="2" />
+              </svg>
+            ) : (
+              <svg width="21" height="21" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M20.25 15.35A8.25 8.25 0 0 1 8.65 3.75 8.75 8.75 0 1 0 20.25 15.35Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+              </svg>
+            )}
+          </button>
+
+          <div className="profile-menu" ref={menuRef}>
           <button
             className={`profile ${isProfileMenuOpen ? 'is-open' : ''}`}
             type="button"
@@ -111,6 +131,7 @@ function Header() {
               )}
             </div>
           )}
+          </div>
         </div>
       </div>
 
