@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import api from '../api/api';
 import { useAuth } from '../contexts/AuthContexts';
 import { useFavorites } from '../contexts/FavoritesContext';
+import { getWeightLabel } from '../utils/teaWeights';
 import styles from './ProfilePage.module.css';
 
 const formatPrice = (value) => `${Number(value || 0).toLocaleString('ru-RU')} ₸`;
@@ -250,7 +251,7 @@ const ProfilePage = () => {
                 )}
                 <div className={styles.orderProducts}>
                   {order.items?.map((item) => (
-                    <span key={item.id}>{item.tea_name}, {item.weight} г x{item.quantity}</span>
+                    <span key={item.id}>{item.tea_name}, {getWeightLabel(item.weight, { slug: item.tea_slug })} x{item.quantity}</span>
                   ))}
                 </div>
               </article>

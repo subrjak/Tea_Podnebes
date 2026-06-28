@@ -61,7 +61,7 @@ const TeaCard = ({ tea, onAddToCart }) => {
         </Link>
 
         <div className="tea-card__meta">
-          <span>{getWeightLabel(selectedWeight)}</span>
+          <span>{getWeightLabel(selectedWeight, tea)}</span>
           <strong className="price">{formatPrice(selectedPrice)}</strong>
         </div>
 
@@ -73,7 +73,7 @@ const TeaCard = ({ tea, onAddToCart }) => {
           >
             {weightOptions.map((weight) => (
               <option key={weight} value={weight}>
-                {getWeightLabel(weight)}
+                {getWeightLabel(weight, tea)}
               </option>
             ))}
           </select>

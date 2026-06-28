@@ -60,7 +60,7 @@ const CartPage = () => {
                 <Link to={`/tea/${item.slug}`}>{item.name}</Link>
                 <div className={styles.itemMeta}>
                   <span>{item.category?.name || 'Без категории'}</span>
-                  <span>Фасовка: {getWeightLabel(item.weight)}</span>
+                  <span>Фасовка: {getWeightLabel(item.weight, item)}</span>
                   <span>На складе: {item.stock} шт.</span>
                   <span>{formatPrice(item.linePrice)} за шт.</span>
                 </div>

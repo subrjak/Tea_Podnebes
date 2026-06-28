@@ -44,6 +44,12 @@ const TeaDetailPage = () => {
     tea ? getTeaWeightOptions(tea) : [25, 50, 100, 200]
   ), [tea]);
 
+  useEffect(() => {
+    if (!weightOptions.includes(selectedWeight)) {
+      setSelectedWeight(weightOptions.includes(100) ? 100 : weightOptions[0]);
+    }
+  }, [selectedWeight, weightOptions]);
+
   const selectedPrice = tea ? getWeightPrice(tea.price, selectedWeight) : 0;
 
   if (loading) return <div className={styles.loading}>Загрузка...</div>;
@@ -145,7 +151,7 @@ const TeaDetailPage = () => {
                   type="button"
                   onClick={() => setSelectedWeight(weight)}
                 >
-                  {getWeightLabel(weight)}
+                  {getWeightLabel(weight, tea)}
                 </button>
               ))}
             </div>

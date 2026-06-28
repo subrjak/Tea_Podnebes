@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Log;
 
 class TelegramOrderService
 {
+    private const COIN_TEA_WEIGHT = 5;
+    private const COIN_TEA_SLUGS = ['puer-coins-5g'];
+
     public function sendOrder(Order $order): ?string
     {
         if (!$this->isConfigured()) {
@@ -122,9 +125,9 @@ class TelegramOrderService
 
         $items = $order->items
             ->map(fn ($item) => sprintf(
-                "• %s, %d г x%d — %s ₸",
+                "• %s, %s x%d — %s ₸",
                 e($item->tea_name),
-                $item->weight,
+                $this->formatItemAmount($item),
                 $item->quantity,
                 number_format($item->total_price, 0, '.', ' ')
             ))
@@ -151,6 +154,37 @@ class TelegramOrderService
                 : null,
             'Сумма: <b>' . number_format($order->total_price, 0, '.', ' ') . ' ₸</b>',
         ], fn ($line) => $line !== null));
+    }
+
+    private function formatItemAmount($item): string
+    {
+        if (in_array((string) $item->tea_slug, self::COIN_TEA_SLUGS, true)) {
+            $coinCount = max(1, (int) ($item->weight / self::COIN_TEA_WEIGHT));
+
+            return $coinCount . ' ' . $this->coinNoun($coinCount);
+        }
+
+        return "{$item->weight} г";
+    }
+
+    private function coinNoun(int $count): string
+    {
+        $lastTwoDigits = $count % 100;
+        $lastDigit = $count % 10;
+
+        if ($lastTwoDigits >= 11 && $lastTwoDigits <= 14) {
+            return 'монет';
+        }
+
+        if ($lastDigit === 1) {
+            return 'монета';
+        }
+
+        if ($lastDigit >= 2 && $lastDigit <= 4) {
+            return 'монеты';
+        }
+
+        return 'монет';
     }
 
     private function buildOrderKeyboard(Order $order): array

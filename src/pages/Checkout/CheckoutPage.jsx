@@ -253,7 +253,7 @@ const CheckoutPage = () => {
               <div className={styles.itemRow} key={item.cartKey}>
                 <div>
                   <strong>{item.name}</strong>
-                  <span>{getWeightLabel(item.weight)} x{item.quantity}</span>
+                  <span>{getWeightLabel(item.weight, item)} x{item.quantity}</span>
                 </div>
                 <em>{formatPrice(item.linePrice * item.quantity)}</em>
               </div>
