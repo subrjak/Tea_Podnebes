@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import api from '../../api/api';
 import { useAuth } from '../../contexts/AuthContexts';
 import { useCart } from '../../contexts/CartContext';
+import { FREE_DELIVERY_THRESHOLD, getDeliveryPrice, getFreeDeliveryRemaining } from '../../utils/delivery';
 import { getWeightLabel } from '../../utils/teaWeights';
 import styles from './CheckoutPage.module.css';
 
@@ -26,6 +27,9 @@ const CheckoutPage = () => {
   const [createdOrder, setCreatedOrder] = useState(null);
   const discountPercent = Number(user?.discount_percent) || 0;
   const discountedTotal = Math.round(totalPrice * (100 - discountPercent) / 100);
+  const deliveryPrice = getDeliveryPrice(discountedTotal);
+  const freeDeliveryRemaining = getFreeDeliveryRemaining(discountedTotal);
+  const payableTotal = discountedTotal + deliveryPrice;
 
   const contactDataFilled = Boolean(
     form.name.trim()
@@ -238,7 +242,7 @@ const CheckoutPage = () => {
                   <div className={styles.qrPlaceholder}>QR</div>
                 )}
                 <div>
-                  <strong>Сумма к оплате: {formatPrice(discountedTotal)}</strong>
+                  <strong>Сумма к оплате: {formatPrice(payableTotal)}</strong>
                   <p>После оплаты администратор сверит заказ и подтвердит детали.</p>
                 </div>
               </div>
@@ -268,14 +272,21 @@ const CheckoutPage = () => {
             <strong>{discountPercent > 0 ? `-${discountPercent}%` : 'Без скидки'}</strong>
           </div>
           <div className={styles.totalRow}>
+            <span>Доставка</span>
+            <strong>{deliveryPrice > 0 ? formatPrice(deliveryPrice) : 'Бесплатно'}</strong>
+          </div>
+          <div className={styles.totalRow}>
             <span>К оплате</span>
-            <strong>{formatPrice(discountedTotal)}</strong>
+            <strong>{formatPrice(payableTotal)}</strong>
           </div>
           {error && <div className={styles.error}>{error}</div>}
           <button className={styles.submitButton} type="submit" disabled={submitting}>
             {submitting ? 'Отправляем...' : 'Оформить заказ'}
           </button>
-          <p className={styles.hint}>После отправки заказ попадет администратору в Telegram.</p>
+          <p className={styles.hint}>
+            Доставка стоит {formatPrice(1000)}. При заказе от {formatPrice(FREE_DELIVERY_THRESHOLD)} доставка бесплатная
+            {freeDeliveryRemaining > 0 ? `, осталось добавить на ${formatPrice(freeDeliveryRemaining)}` : ''}.
+          </p>
         </aside>
       </form>
     </div>

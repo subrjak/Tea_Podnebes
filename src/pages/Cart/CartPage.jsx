@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContexts';
 import { useCart } from '../../contexts/CartContext';
+import { FREE_DELIVERY_THRESHOLD, getDeliveryPrice, getFreeDeliveryRemaining } from '../../utils/delivery';
 import { getWeightLabel } from '../../utils/teaWeights';
 import styles from './CartPage.module.css';
 
@@ -21,6 +22,10 @@ const CartPage = () => {
   } = useCart();
   const discountPercent = Number(user?.discount_percent) || 0;
   const discountedTotal = Math.round(totalPrice * (100 - discountPercent) / 100);
+  const productsTotal = isAuthenticated ? discountedTotal : totalPrice;
+  const deliveryPrice = getDeliveryPrice(productsTotal);
+  const freeDeliveryRemaining = getFreeDeliveryRemaining(productsTotal);
+  const payableTotal = productsTotal + deliveryPrice;
 
   if (!items.length) {
     return (
@@ -108,15 +113,20 @@ const CartPage = () => {
             <span>{user?.customer_status || 'Статус после входа'}</span>
             <strong>{isAuthenticated && discountPercent > 0 ? `-${discountPercent}%` : 'Без скидки'}</strong>
           </div>
+          <div className={styles.summaryRow}>
+            <span>Доставка</span>
+            <strong>{deliveryPrice > 0 ? formatPrice(deliveryPrice) : 'Бесплатно'}</strong>
+          </div>
           <div className={styles.summaryTotal}>
             <span>К оплате</span>
-            <strong>{formatPrice(isAuthenticated ? discountedTotal : totalPrice)}</strong>
+            <strong>{formatPrice(payableTotal)}</strong>
           </div>
           <Link className={styles.checkoutButton} to={isAuthenticated ? '/checkout' : '/login'}>
             {isAuthenticated ? 'Оформить заказ' : 'Войти для оформления'}
           </Link>
           <p className={styles.summaryHint}>
-            На следующем шаге укажите контакты, адрес доставки и выберите оплату: QR онлайн или наличными при получении.
+            Доставка стоит {formatPrice(1000)}. При заказе от {formatPrice(FREE_DELIVERY_THRESHOLD)} доставка бесплатная
+            {freeDeliveryRemaining > 0 ? `, осталось добавить на ${formatPrice(freeDeliveryRemaining)}` : ''}.
           </p>
           <button className={styles.clearButton} type="button" onClick={clearCart}>
             Очистить корзину

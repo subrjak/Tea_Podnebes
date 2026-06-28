@@ -18,6 +18,9 @@ use Illuminate\Validation\Rule;
 
 class OrderController extends Controller
 {
+    private const DELIVERY_PRICE = 1000;
+    private const FREE_DELIVERY_THRESHOLD = 6000;
+
     public function store(Request $request, TelegramOrderService $telegram): JsonResponse
     {
         $user = AuthController::userFromToken($request);
@@ -104,7 +107,9 @@ class OrderController extends Controller
                 })
                 ->max('discount_percent');
             $discountPercent = max($statusDiscount, $eventDiscount);
-            $totalPrice = (int) round($subtotalPrice * (100 - $discountPercent) / 100);
+            $productsTotal = (int) round($subtotalPrice * (100 - $discountPercent) / 100);
+            $deliveryPrice = $productsTotal >= self::FREE_DELIVERY_THRESHOLD ? 0 : self::DELIVERY_PRICE;
+            $totalPrice = $productsTotal + $deliveryPrice;
 
             $order = Order::create([
                 'user_id' => $user->id,

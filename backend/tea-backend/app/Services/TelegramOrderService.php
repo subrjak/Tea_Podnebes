@@ -10,6 +10,8 @@ class TelegramOrderService
 {
     private const COIN_TEA_WEIGHT = 5;
     private const COIN_TEA_SLUGS = ['puer-coins-5g'];
+    private const DELIVERY_PRICE = 1000;
+    private const FREE_DELIVERY_THRESHOLD = 6000;
 
     public function sendOrder(Order $order): ?string
     {
@@ -132,6 +134,8 @@ class TelegramOrderService
                 number_format($item->total_price, 0, '.', ' ')
             ))
             ->implode("\n");
+        $productsTotal = $this->productsTotal($order);
+        $deliveryPrice = $this->deliveryPrice($productsTotal);
 
         return implode("\n", array_filter([
             "<b>Новый заказ #{$order->order_number}</b>",
@@ -149,6 +153,7 @@ class TelegramOrderService
             $items,
             '',
             "Вес: {$order->total_weight} г",
+            'Доставка: ' . ($deliveryPrice > 0 ? number_format($deliveryPrice, 0, '.', ' ') . ' ₸' : 'бесплатно'),
             $order->discount_percent > 0
                 ? 'Скидка: ' . $order->discount_percent . '% (без скидки ' . number_format($order->subtotal_price, 0, '.', ' ') . ' ₸)'
                 : null,
@@ -165,6 +170,16 @@ class TelegramOrderService
         }
 
         return "{$item->weight} г";
+    }
+
+    private function productsTotal(Order $order): int
+    {
+        return (int) round($order->subtotal_price * (100 - $order->discount_percent) / 100);
+    }
+
+    private function deliveryPrice(int $productsTotal): int
+    {
+        return $productsTotal >= self::FREE_DELIVERY_THRESHOLD ? 0 : self::DELIVERY_PRICE;
     }
 
     private function coinNoun(int $count): string
