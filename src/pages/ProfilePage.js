@@ -36,6 +36,7 @@ const ProfilePage = () => {
   const { favorites, toggleFavorite, reloadFavorites } = useFavorites();
   const [orders, setOrders] = useState([]);
   const [ordersLoading, setOrdersLoading] = useState(true);
+  const [ordersError, setOrdersError] = useState(null);
   const [isLogoutConfirmOpen, setIsLogoutConfirmOpen] = useState(false);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState(null);
@@ -67,6 +68,11 @@ const ProfilePage = () => {
         const res = await api.get('/orders');
         if (active) {
           setOrders(res.data.orders || []);
+          setOrdersError(null);
+        }
+      } catch {
+        if (active) {
+          setOrdersError('Не удалось загрузить историю заказов.');
         }
       } finally {
         if (active) {
@@ -223,7 +229,9 @@ const ProfilePage = () => {
           <span className={styles.kicker}>История</span>
           <h2>Покупки</h2>
         </div>
-        {ordersLoading ? (
+        {ordersError ? (
+          <p className={styles.emptyText}>{ordersError}</p>
+        ) : ordersLoading ? (
           <p className={styles.emptyText}>Загружаем историю...</p>
         ) : orders.length ? (
           <div className={styles.ordersList}>

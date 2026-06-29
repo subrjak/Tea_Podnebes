@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\DiscountEvent;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -27,8 +28,8 @@ class AuthController extends Controller
             'email' => $validated['email'],
             'password' => $validated['password'],
             'api_token' => hash('sha256', $token),
-            'is_admin' => $validated['name'] === 'Богдан',
-            'admin_status' => $validated['name'] === 'Богдан' ? User::ROLE_OWNER : null,
+            'is_admin' => false,
+            'admin_status' => null,
         ]);
 
         return response()->json([
@@ -119,6 +120,9 @@ class AuthController extends Controller
     private function serializeUser(User $user): array
     {
         $status = $user->customerStatus();
+        $statusDiscount = min((int) $status['discount'], 20);
+        $eventDiscount = DiscountEvent::activePercent();
+        $effectiveDiscount = max($statusDiscount, $eventDiscount);
 
         return [
             'id' => $user->id,
@@ -137,7 +141,10 @@ class AuthController extends Controller
             'created_at' => $user->created_at,
             'purchased_quantity' => $user->purchasedQuantity(),
             'customer_status' => $status['title'],
-            'discount_percent' => $status['discount'],
+            'status_discount_percent' => $statusDiscount,
+            'event_discount_percent' => $eventDiscount,
+            'effective_discount_percent' => $effectiveDiscount,
+            'discount_percent' => $effectiveDiscount,
             'next_status_title' => $status['next_title'],
             'next_status_quantity' => $status['next_quantity'],
         ];

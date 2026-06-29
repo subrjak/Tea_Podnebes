@@ -9,6 +9,7 @@ export const FavoritesProvider = ({ children }) => {
   const [favorites, setFavorites] = useState([]);
   const [favoriteIds, setFavoriteIds] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const loadFavorites = useCallback(async () => {
     if (!isAuthenticated) {
@@ -18,11 +19,16 @@ export const FavoritesProvider = ({ children }) => {
     }
 
     setLoading(true);
+    setError(null);
 
     try {
       const res = await api.get('/favorites');
       setFavorites(res.data.favorites || []);
       setFavoriteIds(res.data.ids || []);
+    } catch {
+      setFavorites([]);
+      setFavoriteIds([]);
+      setError('Не удалось загрузить избранное.');
     } finally {
       setLoading(false);
     }
@@ -58,10 +64,11 @@ export const FavoritesProvider = ({ children }) => {
     favorites,
     favoriteIds,
     loading,
+    error,
     isFavorite,
     toggleFavorite,
     reloadFavorites: loadFavorites,
-  }), [favorites, favoriteIds, loading, isFavorite, toggleFavorite, loadFavorites]);
+  }), [favorites, favoriteIds, loading, error, isFavorite, toggleFavorite, loadFavorites]);
 
   return (
     <FavoritesContext.Provider value={value}>

@@ -97,15 +97,7 @@ class OrderController extends Controller
             $subtotalPrice = $items->sum('total_price');
             $status = CustomerStatus::fromQuantity($user->purchasedQuantity());
             $statusDiscount = min((int) $status['discount'], 20);
-            $eventDiscount = (int) DiscountEvent::query()
-                ->where('is_active', true)
-                ->where(function ($query) {
-                    $query->whereNull('starts_at')->orWhere('starts_at', '<=', now());
-                })
-                ->where(function ($query) {
-                    $query->whereNull('ends_at')->orWhere('ends_at', '>=', now());
-                })
-                ->max('discount_percent');
+            $eventDiscount = DiscountEvent::activePercent();
             $discountPercent = max($statusDiscount, $eventDiscount);
             $productsTotal = (int) round($subtotalPrice * (100 - $discountPercent) / 100);
             $deliveryPrice = $productsTotal >= self::FREE_DELIVERY_THRESHOLD ? 0 : self::DELIVERY_PRICE;

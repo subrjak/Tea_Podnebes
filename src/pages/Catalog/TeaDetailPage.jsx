@@ -29,9 +29,8 @@ const TeaDetailPage = () => {
       try {
         const res = await api.get(`/teas/${slug}`);
         setTea(res.data);
-      } catch (err) {
+      } catch {
         setError('Товар не найден');
-        console.error(err);
       } finally {
         setLoading(false);
       }

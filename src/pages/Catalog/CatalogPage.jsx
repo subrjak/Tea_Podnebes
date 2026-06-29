@@ -86,10 +86,9 @@ const CatalogPage = () => {
           ...nextMeta,
         }));
 
-      } catch (err) {
+      } catch {
         if (!active) return;
         setError('Не удалось загрузить каталог');
-        console.error(err);
       } finally {
         if (active) {
           setLoading(false);

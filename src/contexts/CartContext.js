@@ -49,7 +49,11 @@ export const CartProvider = ({ children }) => {
   });
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    } catch {
+      // Keep the in-memory cart usable even when persistent storage is blocked.
+    }
   }, [items]);
 
   const addItem = (tea, weight = DEFAULT_WEIGHT) => {

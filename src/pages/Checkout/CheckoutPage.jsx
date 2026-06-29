@@ -85,7 +85,11 @@ const CheckoutPage = () => {
       const res = await api.post('/orders', orderPayload);
       setCreatedOrder(res.data.order);
       clearCart();
-      refreshUser();
+      try {
+        await refreshUser();
+      } catch {
+        // The order is already created; profile status will refresh on the next visit.
+      }
     } catch (err) {
       setError(err.response?.data?.message || 'Не удалось оформить заказ. Проверьте данные и попробуйте снова.');
     } finally {

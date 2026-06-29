@@ -1,24 +1,54 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import api from '../api/api';
+import api, { clearAuthToken, setAuthToken } from '../api/api';
 
 const AuthContext = createContext(null);
+
+const readToken = () => {
+  try {
+    return localStorage.getItem('token');
+  } catch {
+    return null;
+  }
+};
+
+const writeToken = (token) => {
+  setAuthToken(token);
+
+  try {
+    localStorage.setItem('token', token);
+  } catch {
+    // The API client keeps an in-memory token for this browser session.
+  }
+};
+
+const removeToken = () => {
+  clearAuthToken();
+
+  try {
+    localStorage.removeItem('token');
+  } catch {
+    // Storage can be unavailable in private or restricted browser modes.
+  }
+};
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [initializing, setInitializing] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = readToken();
 
     if (!token) {
       setInitializing(false);
       return;
     }
 
+    setAuthToken(token);
+
     api.get('/me')
       .then((res) => setUser(res.data.user))
       .catch(() => {
-        localStorage.removeItem('token');
+        removeToken();
         setUser(null);
       })
       .finally(() => setInitializing(false));
@@ -32,14 +62,14 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (credentials) => {
     const res = await api.post('/login', credentials);
-    localStorage.setItem('token', res.data.token);
+    writeToken(res.data.token);
     setUser(res.data.user);
     return res.data.user;
   };
 
   const register = async (data) => {
     const res = await api.post('/register', data);
-    localStorage.setItem('token', res.data.token);
+    writeToken(res.data.token);
     setUser(res.data.user);
     return res.data.user;
   };
@@ -54,7 +84,7 @@ export const AuthProvider = ({ children }) => {
     try {
       await api.post('/logout');
     } finally {
-      localStorage.removeItem('token');
+      removeToken();
       setUser(null);
     }
   };

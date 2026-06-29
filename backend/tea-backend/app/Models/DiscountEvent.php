@@ -21,4 +21,17 @@ class DiscountEvent extends Model
         'ends_at' => 'datetime',
         'is_active' => 'boolean',
     ];
+
+    public static function activePercent(): int
+    {
+        return (int) static::query()
+            ->where('is_active', true)
+            ->where(function ($query) {
+                $query->whereNull('starts_at')->orWhere('starts_at', '<=', now());
+            })
+            ->where(function ($query) {
+                $query->whereNull('ends_at')->orWhere('ends_at', '>=', now());
+            })
+            ->max('discount_percent');
+    }
 }
