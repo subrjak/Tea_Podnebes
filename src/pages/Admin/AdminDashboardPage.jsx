@@ -90,7 +90,7 @@ const AdminDashboardPage = () => {
                   <strong>{tea.name}</strong>
                   <span>{tea.category?.name || 'Без категории'}</span>
                 </div>
-                <em>{tea.stock} шт.</em>
+                <em>{tea.stock} г</em>
               </div>
             ))}
           </div>

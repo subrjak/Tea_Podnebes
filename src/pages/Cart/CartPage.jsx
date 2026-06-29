@@ -66,8 +66,8 @@ const CartPage = () => {
                 <div className={styles.itemMeta}>
                   <span>{item.category?.name || 'Без категории'}</span>
                   <span>Фасовка: {getWeightLabel(item.weight, item)}</span>
-                  <span>На складе: {item.stock} шт.</span>
-                  <span>{formatPrice(item.linePrice)} за шт.</span>
+                  <span>На складе: {item.stock} г</span>
+                  <span>{formatPrice(item.linePrice)} за фасовку</span>
                 </div>
               </div>
 
@@ -79,7 +79,7 @@ const CartPage = () => {
                   <span>{item.quantity}</span>
                   <button
                     type="button"
-                    disabled={item.stock > 0 && item.quantity >= item.stock}
+                    disabled={item.stock <= 0 || (item.quantity + 1) * item.weight > item.stock}
                     onClick={() => incrementItem(item.cartKey)}
                     aria-label="Увеличить количество"
                   >

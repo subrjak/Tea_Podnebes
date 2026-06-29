@@ -116,6 +116,7 @@ const TeaDetailPage = () => {
     { label: 'Посуда', value: tea.recommended_ware || 'Не указано' },
   ];
   const inStock = Number(tea.stock) > 0;
+  const canAddSelectedWeight = inStock && selectedWeight <= Number(tea.stock);
 
   return (
     <div className={styles.teaDetail}>
@@ -160,10 +161,10 @@ const TeaDetailPage = () => {
             <span className={styles.priceLabel}>Цена за выбранную фасовку</span>
             <strong className={styles.price}>{formatPrice(selectedPrice)}</strong>
             <span className={inStock ? styles.stock : styles.stockEmpty}>
-              {inStock ? `На складе: ${tea.stock} шт.` : 'Нет в наличии'}
+              {inStock ? `На складе: ${tea.stock} г` : 'Нет в наличии'}
             </span>
             <div className={styles.actions}>
-              <button className={styles.addButton} disabled={!inStock} onClick={handleAddToCart}>
+              <button className={styles.addButton} disabled={!canAddSelectedWeight} onClick={handleAddToCart}>
                 Добавить в корзину
               </button>
               <button

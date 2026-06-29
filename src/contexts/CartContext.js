@@ -37,6 +37,12 @@ const migrateCartItem = (item) => {
   };
 };
 
+const getTeaWeightInCart = (items, teaId) => (
+  items
+    .filter((item) => item.id === teaId)
+    .reduce((sum, item) => sum + item.weight * item.quantity, 0)
+);
+
 export const CartProvider = ({ children }) => {
   const [items, setItems] = useState(() => {
     try {
@@ -62,15 +68,14 @@ export const CartProvider = ({ children }) => {
 
     setItems((currentItems) => {
       const existingItem = currentItems.find((item) => item.cartKey === cartTea.cartKey);
-      const currentTeaQuantity = currentItems
-        .filter((item) => item.id === cartTea.id)
-        .reduce((sum, item) => sum + item.quantity, 0);
+      const currentTeaWeight = getTeaWeightInCart(currentItems, cartTea.id);
+      const nextTeaWeight = currentTeaWeight + cartTea.weight;
 
-      if (currentTeaQuantity >= cartTea.stock) {
+      if (nextTeaWeight > cartTea.stock) {
         result = {
           ok: false,
           message: cartTea.stock > 0
-            ? `На складе доступно ${cartTea.stock} шт.`
+            ? `На складе доступно ${cartTea.stock} г.`
             : 'Товара сейчас нет на складе.',
         };
         return currentItems;
@@ -100,8 +105,8 @@ export const CartProvider = ({ children }) => {
 
       const otherQuantity = currentItems
         .filter((item) => item.id === targetItem.id && item.cartKey !== cartKey)
-        .reduce((sum, item) => sum + item.quantity, 0);
-      const availableForItem = Math.max(0, targetItem.stock - otherQuantity);
+        .reduce((sum, item) => sum + item.weight * item.quantity, 0);
+      const availableForItem = Math.floor(Math.max(0, targetItem.stock - otherQuantity) / targetItem.weight);
 
       return currentItems
         .map((item) => (
@@ -119,11 +124,9 @@ export const CartProvider = ({ children }) => {
 
       if (!targetItem) return currentItems;
 
-      const currentTeaQuantity = currentItems
-        .filter((item) => item.id === targetItem.id)
-        .reduce((sum, item) => sum + item.quantity, 0);
+      const currentTeaWeight = getTeaWeightInCart(currentItems, targetItem.id);
 
-      if (currentTeaQuantity >= targetItem.stock) {
+      if (currentTeaWeight + targetItem.weight > targetItem.stock) {
         return currentItems;
       }
 

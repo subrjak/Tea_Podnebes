@@ -12,7 +12,7 @@ const emptyForm = {
   origin: 'Китай, Юньнань',
   age: 1,
   price: '',
-  stock: 1,
+  stock: 1000,
   image: '',
   brewing_temperature: '',
   recommended_ware: '',
@@ -191,7 +191,7 @@ const AdminTeasPage = () => {
               <input name="price" type="number" min="0" step="1" value={form.price} onChange={handleChange} required />
             </label>
             <label>
-              <span>Остаток, шт.</span>
+              <span>Остаток, г</span>
               <input name="stock" type="number" min="0" step="1" value={form.stock} onChange={handleChange} required />
             </label>
             <label>
@@ -263,7 +263,7 @@ const AdminTeasPage = () => {
                     <span>{tea.category?.name || 'Без категории'} / {tea.origin}</span>
                   </div>
                   <div className={styles.tableActions}>
-                    <em>{formatPrice(tea.price)} / {tea.stock} шт.</em>
+                    <em>{formatPrice(tea.price)} / {tea.stock} г</em>
                     <button type="button" onClick={() => handleDelete(tea)}>Удалить</button>
                   </div>
                 </div>

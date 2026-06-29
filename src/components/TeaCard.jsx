@@ -16,6 +16,7 @@ const TeaCard = ({ tea, onAddToCart }) => {
   const [favoriteBusy, setFavoriteBusy] = useState(false);
   const selectedPrice = getWeightPrice(tea.price, selectedWeight);
   const inStock = Number(tea.stock) > 0;
+  const canAddSelectedWeight = inStock && selectedWeight <= Number(tea.stock);
 
   useEffect(() => {
     if (!weightOptions.includes(selectedWeight)) {
@@ -80,13 +81,13 @@ const TeaCard = ({ tea, onAddToCart }) => {
         </label>
 
         <span className={inStock ? 'tea-card__stock' : 'tea-card__stock is-empty'}>
-          {inStock ? `На складе: ${tea.stock} шт.` : 'Нет в наличии'}
+          {inStock ? `На складе: ${tea.stock} г` : 'Нет в наличии'}
         </span>
 
         <div className="tea-card__actions">
           <button
             className="add-to-cart"
-            disabled={!inStock}
+            disabled={!canAddSelectedWeight}
             onClick={() => onAddToCart(tea, selectedWeight)}
           >
             В корзину

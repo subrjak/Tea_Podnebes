@@ -60,16 +60,16 @@ class OrderController extends Controller
                 ->get()
                 ->keyBy('id');
 
-            $requestedByTea = collect($validated['items'])
+            $requestedGramsByTea = collect($validated['items'])
                 ->groupBy('id')
-                ->map(fn ($items) => $items->sum('quantity'));
+                ->map(fn ($items) => $items->sum(fn ($item) => (int) $item['weight'] * (int) $item['quantity']));
 
-            foreach ($requestedByTea as $teaId => $quantity) {
+            foreach ($requestedGramsByTea as $teaId => $requestedGrams) {
                 $tea = $teas->get((int) $teaId);
 
-                if (!$tea || $tea->stock < $quantity) {
+                if (!$tea || $tea->stock < $requestedGrams) {
                     throw ValidationException::withMessages([
-                        'items' => ["Недостаточно товара «{$tea?->name}» на складе."],
+                        'items' => ["Недостаточно товара «{$tea?->name}» на складе. Доступно {$tea?->stock} г."],
                     ]);
                 }
             }
@@ -123,8 +123,8 @@ class OrderController extends Controller
 
             $order->items()->createMany($items->all());
 
-            foreach ($requestedByTea as $teaId => $quantity) {
-                $teas->get((int) $teaId)->decrement('stock', (int) $quantity);
+            foreach ($requestedGramsByTea as $teaId => $requestedGrams) {
+                $teas->get((int) $teaId)->decrement('stock', (int) $requestedGrams);
             }
 
             return $order->load('items');
