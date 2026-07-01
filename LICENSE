@@ -1,0 +1,87 @@
+Tea Pod Nebes Proprietary Source-Available License
+
+Copyright (c) 2026 subrjak
+
+All Rights Reserved.
+
+1. DEFINITIONS
+
+"Project" or "Software" means the Tea Pod Nebes website, application, source code, backend code, frontend code, scripts, configuration, database structure, business logic, UI/UX, visual design, texts, images, assets, documentation, and any other original materials contained in this repository, except third-party components.
+
+"Owner" means subrjak, the copyright holder and exclusive owner of the original Project materials.
+
+"Repository" means this source-code repository and all files, folders, branches, commits, releases, and distributed copies derived from it.
+
+"Third-Party Components" means external libraries, frameworks, packages, dependencies, tools, fonts, icons, or other materials not authored by the Owner, including but not limited to files in node_modules, vendor, package-lock.json dependency entries, Composer dependencies, and any externally sourced assets. Third-Party Components remain governed by their own respective licenses.
+
+2. OWNERSHIP
+
+The Project is proprietary. All rights, title, and interest in and to the original Project materials belong exclusively to the Owner.
+
+No ownership rights are transferred by access to, possession of, cloning of, viewing of, downloading of, or receipt of this Repository.
+
+3. LIMITED PERMITTED USE
+
+You are granted only a limited, non-exclusive, non-transferable, non-sublicensable, revocable permission to view and read the source code and documentation for informational review purposes.
+
+No other rights are granted.
+
+4. STRICTLY PROHIBITED USE
+
+Without explicit prior written permission from the Owner, you may not:
+
+- copy, reproduce, or duplicate the Project in whole or in part;
+- modify, adapt, translate, transform, or create derivative works based on the Project;
+- use the Project, or any part of it, in any personal, educational, internal, public, commercial, client, freelance, or open-source project;
+- deploy, publish, host, run, operate, or make the Project available in any environment;
+- sell, rent, license, sublicense, lease, monetize, or commercially exploit the Project;
+- use the Project as a template, starter, reference implementation, base, or source for another website, application, product, or service;
+- extract, reuse, recreate, imitate, or replicate any source code, architecture, database structure, business logic, UI/UX, layout, visual design, texts, images, assets, or distinctive elements of the Project;
+- reverse engineer, decompile, disassemble, or attempt to derive non-public parts of the Project;
+- remove, alter, hide, or misrepresent any copyright, license, authorship, or ownership notice;
+- claim authorship, ownership, or sponsorship of the Project or any part of it;
+- distribute, share, mirror, upload, publish, or otherwise transfer the Project or any copy of it to any third party.
+
+5. NO IMPLIED RIGHTS
+
+Access to this Repository does not imply or grant any license, permission, waiver, assignment, transfer, or other right except the limited viewing permission expressly stated in Section 3.
+
+All rights not expressly granted are reserved by the Owner.
+
+6. COMMERCIAL USE
+
+Commercial use of the Project is strictly prohibited unless the Owner grants explicit prior written permission in a separate signed agreement.
+
+7. ATTRIBUTION
+
+If the Owner grants exceptional written permission for any use of the Project, clear and visible attribution to the Owner and the Project must be provided unless the written permission states otherwise.
+
+Attribution does not replace the need for written permission and does not grant any additional rights.
+
+8. THIRD-PARTY COMPONENTS
+
+This license applies only to the Owner's original Project materials.
+
+Third-Party Components are not relicensed by this document. You are responsible for complying with all applicable third-party licenses, notices, and terms.
+
+9. TERMINATION
+
+Any permission granted under this license terminates automatically and immediately if you violate any term of this license.
+
+Upon termination, you must immediately stop all use of the Project and destroy all copies in your possession or control.
+
+10. ENFORCEMENT
+
+Unauthorized use, copying, modification, distribution, deployment, publication, or exploitation of the Project may constitute copyright infringement, breach of license, and violation of applicable law.
+
+The Owner reserves the right to pursue all available legal remedies.
+
+11. DISCLAIMER
+
+The Project is provided "AS IS", without warranty of any kind, express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, availability, accuracy, security, or non-infringement.
+
+The Owner is not liable for any claim, damage, loss, or other liability arising from access to or use of the Project.
+
+12. ACCEPTANCE
+
+By accessing, viewing, cloning, downloading, copying, or otherwise interacting with this Repository, you acknowledge that you have read, understood, and agree to be bound by this license.
